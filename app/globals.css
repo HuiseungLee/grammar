@@ -194,7 +194,23 @@ button { cursor: pointer; }
 .studio-header { align-items: center; background: var(--navy); color: white; display: flex; height: 58px; justify-content: space-between; padding: 0 1.4rem; }
 .studio-header .brand { font-size: 1.08rem; }
 .studio-identity { align-items: center; color: #bdcdd3; display: flex; font-size: .75rem; gap: .9rem; }
-.studio-identity a { align-items: center; border-left: 1px solid #526a75; color: white; display: flex; gap: .35rem; padding-left: .9rem; }
+.studio-identity a, .studio-identity button { align-items: center; border: 0; border-left: 1px solid #526a75; color: white; cursor: pointer; display: flex; font: inherit; gap: .35rem; padding: 0 0 0 .9rem; }
+.studio-identity button { background: transparent; }
+.studio-login-page { align-items: center; background: var(--navy); display: flex; justify-content: center; min-height: 100vh; padding: 1.5rem; }
+.studio-login-card { background: #f9f8f4; border: 1px solid rgba(255,255,255,.16); border-radius: 14px; box-shadow: 0 22px 60px rgba(8,24,32,.28); max-width: 430px; padding: clamp(2rem, 7vw, 3.25rem); width: 100%; }
+.studio-login-card .brand { color: var(--navy); display: inline-flex; margin-bottom: 2.5rem; }
+.studio-login-icon { align-items: center; background: #dce9e8; border-radius: 50%; color: #326777; display: flex; height: 46px; justify-content: center; margin-bottom: 1rem; width: 46px; }
+.studio-login-icon svg { height: 21px; width: 21px; }
+.studio-login-card h1 { font-family: "Noto Serif KR", Batang, serif; font-size: clamp(2rem, 7vw, 2.7rem); letter-spacing: -.055em; margin: .3rem 0 .75rem; }
+.studio-login-copy { color: #687478; font-size: .88rem; line-height: 1.75; margin: 0 0 1.6rem; }
+.studio-login-card form { display: grid; gap: .55rem; }
+.studio-login-card label { color: #3f4a4e; font-size: .78rem; font-weight: 800; }
+.studio-login-card input { background: white; border: 1px solid #cbd0cc; border-radius: 8px; font-size: 1rem; min-height: 46px; outline: none; padding: .65rem .8rem; }
+.studio-login-card input:focus { border-color: #4d8190; box-shadow: 0 0 0 3px rgba(77,129,144,.15); }
+.studio-login-card form button { background: var(--navy); border: 0; border-radius: 8px; color: white; cursor: pointer; font-size: .86rem; font-weight: 800; margin-top: .45rem; min-height: 46px; }
+.studio-login-card form button:hover { background: #294755; }
+.studio-login-error { color: #a23f50; font-size: .76rem; margin: .15rem 0 0; }
+.studio-login-back { color: #687478; display: inline-block; font-size: .76rem; margin-top: 1.35rem; }
 .studio-shell { display: grid; grid-template-columns: 275px minmax(0, 1fr); height: calc(100vh - 58px); }
 .studio-sidebar { background: #f7f6f2; border-right: 1px solid #d6d8d4; display: flex; flex-direction: column; min-height: 0; padding: 1.5rem 1rem 1rem; }
 .studio-sidebar > nav { flex: 1; min-height: 0; overflow-y: auto; padding: .9rem 0; }

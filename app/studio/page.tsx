@@ -17,7 +17,16 @@ export default async function StudioPage({ searchParams }: { searchParams: Promi
     <main className="studio-page">
       <header className="studio-header">
         <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
-        <div className="studio-identity"><span>{user.displayName}</span><a href={chatGPTSignOutPath("/")} target="_top"><LogOut aria-hidden="true" size={15} /> 로그아웃</a></div>
+        <div className="studio-identity">
+          <span>{user.displayName}</span>
+          {user.authKind === "chatgpt" ? (
+            <a href={chatGPTSignOutPath("/")} target="_top"><LogOut aria-hidden="true" size={15} /> 로그아웃</a>
+          ) : (
+            <form action="/api/studio/logout" method="post">
+              <button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button>
+            </form>
+          )}
+        </div>
       </header>
       <div className="studio-shell">
         <aside className="studio-sidebar">

@@ -3,9 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpenCheck, Brackets, CircleDot, GitCompareArrows } from "lucide-react";
 import { LessonPractice } from "@/components/lesson-practice";
-import { isGrammarEditor } from "@/lib/editor-access";
+import { getGrammarEditorUser, grammarEditorEntryPath } from "@/lib/editor-access";
 import { getLessonBySlug } from "@/lib/grammar-data";
-import { chatGPTSignInPath, getChatGPTUser } from "@/app/chatgpt-auth";
 
 type LessonPageProps = { params: Promise<{ slug: string }> };
 
@@ -22,16 +21,15 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
 }
 
 export default async function LessonPage({ params }: LessonPageProps) {
-  const [{ slug }, user] = await Promise.all([params, getChatGPTUser()]);
+  const [{ slug }, editor] = await Promise.all([params, getGrammarEditorUser()]);
   const lesson = await getLessonBySlug(slug);
   if (!lesson) notFound();
-  const editor = user ? await isGrammarEditor(user) : false;
 
   return (
     <main>
       <header className="site-header">
         <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
-        <nav aria-label="주요 메뉴"><Link href="/#grammar-map">문법 지도</Link><Link href="/#lesson-library">학습 자료</Link>{editor ? <Link className="studio-link" href="/studio">편집실</Link> : !user ? <a className="studio-link" href={chatGPTSignInPath("/studio")} target="_top">편집실</a> : null}</nav>
+        <nav aria-label="주요 메뉴"><Link href="/#grammar-map">문법 지도</Link><Link href="/#lesson-library">학습 자료</Link>{editor ? <Link className="studio-link" href="/studio">편집실</Link> : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top">편집실</a>}</nav>
       </header>
 
       <div className="lesson-shell">

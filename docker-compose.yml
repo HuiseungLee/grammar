@@ -1,0 +1,18 @@
+services:
+  grammar-learning:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grammar-learning
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Seoul
+      GRAMMAR_ADMIN_PASSWORD: "${GRAMMAR_ADMIN_PASSWORD:-}"
+      GRAMMAR_SESSION_SECRET: "${GRAMMAR_SESSION_SECRET:-}"
+    ports:
+      - "127.0.0.1:${GRAMMAR_PORT:-7320}:3000"
+    volumes:
+      - grammar-learning-data:/data
+
+volumes:
+  grammar-learning-data:

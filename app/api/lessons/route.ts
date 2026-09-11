@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { getChatGPTUser } from "@/app/chatgpt-auth";
-import { isGrammarEditor } from "@/lib/editor-access";
+import { getGrammarEditorUser } from "@/lib/editor-access";
 import { BUILT_IN_LESSONS, saveLesson } from "@/lib/grammar-data";
 import { GRAMMAR_DOMAINS, SCHOOL_BANDS, type LessonInput } from "@/lib/lesson-types";
 
@@ -12,9 +11,8 @@ const MAX_EXAMPLES = 12;
 const MAX_CHOICES = 6;
 
 export async function POST(request: Request) {
-  const user = await getChatGPTUser();
+  const user = await getGrammarEditorUser();
   if (!user) return NextResponse.json({ error: "편집실에 로그인해 주세요." }, { status: 401 });
-  if (!(await isGrammarEditor(user))) return NextResponse.json({ error: "이 편집실을 사용할 권한이 없습니다." }, { status: 403 });
 
   let raw: unknown;
   try {

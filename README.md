@@ -1,3 +1,36 @@
+# 수니기는 문법시간
+
+국어 문법 학습 자료를 읽고, 확인 문제를 풀고, 관리자 편집실에서 새 자료를 작성·출판하는 사이트입니다.
+
+## Synology 배포
+
+운영 주소는 `https://grammar.lhsstart.synology.me`이며 컨테이너는 NAS의 루프백 포트 `7320`에서 실행됩니다. GitHub의 `main` 브랜치에 푸시하면 Actions가 NAS의 배포 스크립트를 실행하도록 구성되어 있습니다.
+
+### NAS 최초 설정
+
+1. `/volume1/docker/grammar-app`에 이 저장소를 복제합니다.
+2. `.env.synology.example`을 `.env`로 복사하고 다음 값을 변경합니다.
+   - `GRAMMAR_ADMIN_PASSWORD`: 편집실에서 사용할 강력한 암호
+   - `GRAMMAR_SESSION_SECRET`: 충분히 긴 무작위 문자열
+3. `docker compose up -d --build`를 한 번 실행합니다.
+4. DSM 역방향 프록시에서 `grammar.lhsstart.synology.me`를 `http://127.0.0.1:7320`으로 연결합니다.
+5. GitHub 저장소 Actions secrets에 `NAS_HOST`, `NAS_PORT`, `NAS_USER`, `NAS_SSH_KEY`, `NAS_KNOWN_HOSTS`를 등록합니다.
+6. NAS 배포 계정이 비밀번호 없이 다음 명령만 실행할 수 있도록 `sudoers`를 제한해 둡니다.
+
+```text
+/bin/sh /volume1/docker/grammar-app/scripts/synology-auto-deploy.sh
+```
+
+설정이 끝난 뒤에는 `main` 브랜치로 커밋·푸시할 때마다 새 이미지가 빌드되고 `/api/health` 확인까지 자동으로 수행됩니다. 학습 자료 데이터는 `grammar-learning-data` Docker 볼륨에 유지됩니다.
+
+## 로컬 개발
+
+- `npm run dev`: 개발 서버
+- `npm run lint`: 코드 검사
+- `npm run build`: 배포 빌드
+
+---
+
 # vinext-starter
 
 A clean full-stack starter running on [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and Drizzle support.

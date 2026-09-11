@@ -1,0 +1,44 @@
+import { NextResponse } from "next/server";
+import {
+  ADMIN_SESSION_COOKIE,
+  ADMIN_SESSION_MAX_AGE,
+  createAdminSessionValue,
+  isSynologyAdminConfigured,
+  verifyAdminPassword,
+} from "@/lib/editor-access";
+
+export const dynamic = "force-dynamic";
+
+export async function POST(request: Request) {
+  if (!isSynologyAdminConfigured()) {
+    return NextResponse.json(
+      { error: "Synology 관리자 로그인이 설정되지 않았습니다." },
+      { status: 503 },
+    );
+  }
+
+  const formData = await request.formData();
+  const password = formData.get("password");
+  if (typeof password !== "string" || !(await verifyAdminPassword(password))) {
+    return NextResponse.redirect(new URL("/studio/login?error=1", request.url), 303);
+  }
+
+  const response = NextResponse.redirect(new URL("/studio", request.url), 303);
+  response.cookies.set({
+    name: ADMIN_SESSION_COOKIE,
+    value: await createAdminSessionValue(),
+    httpOnly: true,
+    maxAge: ADMIN_SESSION_MAX_AGE,
+    path: "/",
+    sameSite: "strict",
+    secure: isHttpsRequest(request),
+  });
+  return response;
+}
+
+function isHttpsRequest(request: Request): boolean {
+  const forwardedProtocol = request.headers.get("x-forwarded-proto")
+    ?.split(",")[0]
+    .trim();
+  return forwardedProtocol === "https" || new URL(request.url).protocol === "https:";
+}
