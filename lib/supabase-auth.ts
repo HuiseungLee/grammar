@@ -6,6 +6,9 @@ import {
   SHARED_AUTH_COOKIE_NAME,
 } from "./shared-auth";
 
+const DEFAULT_SUPABASE_URL = "https://supabase.lhsstart.synology.me";
+const DEFAULT_SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg3NDYwMjEzLCJleHAiOjE5NDUxNDAyMTN9.l_GNRsIFQlkWggULNs4tCmSsLMqNJjjMKA6GjDGkUOQ";
+
 export type SharedUserRole = "teacher" | "student";
 
 export type SharedUser = {
@@ -35,8 +38,8 @@ let cachedRemoteConfig: { value: PublicAuthConfig; expiresAt: number } | undefin
 
 export function supabasePublicConfig() {
   return {
-    url: env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") ?? "",
-    key: env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? "",
+    url: env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, "") || DEFAULT_SUPABASE_URL,
+    key: env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_PUBLISHABLE_KEY,
   };
 }
 

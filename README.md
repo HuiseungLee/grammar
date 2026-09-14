@@ -6,7 +6,7 @@
 
 문학 사이트의 Supabase 회원 DB를 공통 계정 저장소로 사용합니다. 세 사이트가 모두 HTTPS로 열릴 때 한 사이트에서 로그인하면 `lhsstart.synology.me`의 문학·문법·진로 하위 도메인에서 같은 로그인 상태를 사용합니다. 회원가입과 이메일 6자리 확인, 교사 초대 코드는 문학 사이트의 기존 방식과 같습니다.
 
-기본 설정에서는 `ACCOUNT_SERVICE_URL`의 문학 서버에서 공개 인증 설정을 자동으로 받아오므로 별도 복사 없이 작동합니다. 연결 요청을 줄이고 싶다면 NAS의 이 프로젝트 `.env`에 문학 사이트 `.env`의 다음 공개 값을 그대로 복사할 수 있습니다.
+현재 문학 Supabase의 URL과 `anon` 게시용 키가 기본값으로 포함되어 있어 별도 복사 없이 작동합니다. Supabase 키를 교체할 때는 NAS의 이 프로젝트 `.env`에 문학 사이트 `.env`의 다음 공개 값을 그대로 복사하면 코드 변경 없이 새 값이 우선 적용됩니다.
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
