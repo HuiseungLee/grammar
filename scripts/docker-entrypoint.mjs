@@ -21,11 +21,19 @@ if (!existsSync(migrationMarker)) {
 }
 
 const variableArguments = [];
-for (const key of ["GRAMMAR_ADMIN_PASSWORD", "GRAMMAR_SESSION_SECRET"]) {
+for (const key of [
+  "GRAMMAR_ADMIN_PASSWORD",
+  "GRAMMAR_SESSION_SECRET",
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+  "ACCOUNT_SERVICE_URL",
+  "TEACHER_EMAILS",
+  "STUDENT_EMAILS",
+]) {
   if (process.env[key]) variableArguments.push("--var", `${key}:${process.env[key]}`);
 }
 
-if (variableArguments.length === 0) {
+if (!process.env.GRAMMAR_ADMIN_PASSWORD && !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
   console.warn("Grammar Studio login is disabled until Synology admin secrets are configured.");
 }
 

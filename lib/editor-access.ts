@@ -7,12 +7,17 @@ import {
   requireChatGPTUser,
   type ChatGPTUser,
 } from "@/app/chatgpt-auth";
+import {
+  getSharedUserFromCookies,
+  isSharedAuthConfigured,
+  type SharedUser,
+} from "@/lib/supabase-auth";
 
 export const ADMIN_SESSION_COOKIE = "grammar_admin_session";
 export const ADMIN_SESSION_MAX_AGE = 60 * 60 * 12;
 
 export type GrammarEditorUser = ChatGPTUser & {
-  authKind: "chatgpt" | "synology";
+  authKind: "chatgpt" | "supabase" | "synology";
 };
 
 export function isSynologyAdminConfigured(): boolean {
@@ -20,7 +25,7 @@ export function isSynologyAdminConfigured(): boolean {
 }
 
 export function grammarEditorEntryPath(returnTo = "/studio"): string {
-  return isSynologyAdminConfigured()
+  return isSharedAuthConfigured() || isSynologyAdminConfigured()
     ? "/studio/login"
     : chatGPTSignInPath(returnTo);
 }
@@ -34,6 +39,9 @@ export async function isGrammarEditor(user: ChatGPTUser): Promise<boolean> {
 }
 
 export async function getGrammarEditorUser(): Promise<GrammarEditorUser | null> {
+  const sharedUser = await getSharedUserFromCookies();
+  if (sharedUser?.role === "teacher") return sharedEditorUser(sharedUser);
+
   const chatGPTUser = await getChatGPTUser();
   if (chatGPTUser && (await isGrammarEditor(chatGPTUser))) {
     return { ...chatGPTUser, authKind: "chatgpt" };
@@ -57,11 +65,25 @@ export async function requireGrammarEditor(
 ): Promise<GrammarEditorUser> {
   const editor = await getGrammarEditorUser();
   if (editor) return editor;
+  const sharedUser = await getSharedUserFromCookies();
+  if (sharedUser) redirect("/?studio=restricted");
+  if (isSharedAuthConfigured()) redirect("/studio/login");
   if (isSynologyAdminConfigured()) redirect("/studio/login");
 
   const user = await requireChatGPTUser(returnTo);
   if (!(await isGrammarEditor(user))) redirect("/?studio=restricted");
   return { ...user, authKind: "chatgpt" };
+}
+
+function sharedEditorUser(user: SharedUser): GrammarEditorUser {
+  const legacyOwner = ["lhsstart@gmail.com", "admin@admin.com"].includes(user.email.toLowerCase());
+  return {
+    userId: legacyOwner ? "synology-owner" : user.id,
+    displayName: user.displayName,
+    email: user.email,
+    fullName: user.realName,
+    authKind: "supabase",
+  };
 }
 
 export async function verifyAdminPassword(candidate: string): Promise<boolean> {

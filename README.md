@@ -2,6 +2,19 @@
 
 국어 문법 학습 자료를 읽고, 확인 문제를 풀고, 관리자 편집실에서 새 자료를 작성·출판하는 사이트입니다.
 
+## 문학·문법·진로 통합 계정
+
+문학 사이트의 Supabase 회원 DB를 공통 계정 저장소로 사용합니다. 세 사이트가 모두 HTTPS로 열릴 때 한 사이트에서 로그인하면 `lhsstart.synology.me`의 문학·문법·진로 하위 도메인에서 같은 로그인 상태를 사용합니다. 회원가입과 이메일 6자리 확인, 교사 초대 코드는 문학 사이트의 기존 방식과 같습니다.
+
+기본 설정에서는 `ACCOUNT_SERVICE_URL`의 문학 서버에서 공개 인증 설정을 자동으로 받아오므로 별도 복사 없이 작동합니다. 연결 요청을 줄이고 싶다면 NAS의 이 프로젝트 `.env`에 문학 사이트 `.env`의 다음 공개 값을 그대로 복사할 수 있습니다.
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+- `TEACHER_EMAILS`, `STUDENT_EMAILS` (사용 중인 경우)
+- `ACCOUNT_SERVICE_URL=https://literature.lhsstart.synology.me`
+
+`SUPABASE_SERVICE_ROLE_KEY`와 `TEACHER_INVITE_CODE`는 문학 사이트에만 보관합니다. 문법·진로 사이트의 회원가입 요청은 문학 사이트의 계정 API가 처리하므로 이 두 서버 비밀값을 복사하지 않습니다. 기존 `GRAMMAR_ADMIN_PASSWORD` 방식은 로그인 화면의 `기존 관리자 암호로 로그인`에서 비상용으로 유지됩니다.
+
 ## Synology 배포
 
 운영 주소는 `https://grammar.lhsstart.synology.me`이며 컨테이너는 NAS의 루프백 포트 `7320`에서 실행됩니다. GitHub의 `main` 브랜치에 푸시하면 Actions가 NAS의 배포 스크립트를 실행하도록 구성되어 있습니다.
@@ -12,6 +25,8 @@
 2. `.env.synology.example`을 `.env`로 복사하고 다음 값을 변경합니다.
    - `GRAMMAR_ADMIN_PASSWORD`: 편집실에서 사용할 강력한 암호
    - `GRAMMAR_SESSION_SECRET`: 충분히 긴 무작위 문자열
+   - `ACCOUNT_SERVICE_URL`: 기본값은 `https://literature.lhsstart.synology.me`
+   - 선택 사항: 위의 문학 사이트 공개 Supabase 값
 3. `docker compose up -d --build`를 한 번 실행합니다.
 4. DSM 역방향 프록시에서 `grammar.lhsstart.synology.me`를 `http://127.0.0.1:7320`으로 연결합니다.
 5. GitHub 저장소 Actions secrets에 `NAS_HOST`, `NAS_PORT`, `NAS_USER`, `NAS_SSH_KEY`, `NAS_KNOWN_HOSTS`를 등록합니다.

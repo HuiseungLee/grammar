@@ -2,26 +2,31 @@ import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import { redirect } from "next/navigation";
 import { chatGPTSignInPath } from "@/app/chatgpt-auth";
+import { SharedLogin } from "@/components/shared-login";
 import {
   getGrammarEditorUser,
   isSynologyAdminConfigured,
 } from "@/lib/editor-access";
+import { isSharedAuthConfigured } from "@/lib/supabase-auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudioLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string | string[] }>;
+  searchParams: Promise<{ auth?: string | string[]; error?: string | string[] }>;
 }) {
-  if (!isSynologyAdminConfigured()) {
+  if (!isSharedAuthConfigured() && !isSynologyAdminConfigured()) {
     redirect(chatGPTSignInPath("/studio"));
   }
 
   const editor = await getGrammarEditorUser();
   if (editor) redirect("/studio");
-
   const params = await searchParams;
+  const legacyRequested = firstParam(params.auth) === "legacy";
+  if (isSharedAuthConfigured() && (!legacyRequested || !isSynologyAdminConfigured())) {
+    return <SharedLogin requiredRole="teacher" legacyLoginHref={isSynologyAdminConfigured() ? "/studio/login?auth=legacy" : undefined} />;
+  }
   const hasError = firstParam(params.error) === "1";
 
   return (

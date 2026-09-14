@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const password = formData.get("password");
   if (typeof password !== "string" || !(await verifyAdminPassword(password))) {
-    return redirectWithinSite("/studio/login?error=1");
+    return redirectWithinSite("/studio/login?auth=legacy&error=1");
   }
 
   const response = redirectWithinSite("/studio");

@@ -4,6 +4,8 @@ import {
   CheckCircle2,
   ChevronRight,
   FilePenLine,
+  LogIn,
+  LogOut,
   Search,
   Sparkles,
 } from "lucide-react";
@@ -14,6 +16,7 @@ import {
 } from "@/lib/editor-access";
 import { getPublishedLessons } from "@/lib/grammar-data";
 import { GRAMMAR_DOMAINS } from "@/lib/lesson-types";
+import { getSharedUserFromCookies, isSharedAuthConfigured } from "@/lib/supabase-auth";
 
 const grammarAreas = [
   { mark: "音", title: "음운", domain: "음운·문자", description: "소리의 체계와 변동", topics: "음운 체계 · 교체 · 탈락 · 첨가 · 축약", tone: "sky" },
@@ -25,11 +28,13 @@ const grammarAreas = [
 ];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ domain?: string | string[]; q?: string | string[] }> }) {
-  const [params, lessons, editor] = await Promise.all([
+  const [params, lessons, editor, account] = await Promise.all([
     searchParams,
     getPublishedLessons(),
     getGrammarEditorUser(),
+    getSharedUserFromCookies(),
   ]);
+  const sharedLoginEnabled = isSharedAuthConfigured();
   const requestedDomain = firstParam(params.domain);
   const domain = requestedDomain && GRAMMAR_DOMAINS.includes(requestedDomain as (typeof GRAMMAR_DOMAINS)[number]) ? requestedDomain : "all";
   const q = (firstParam(params.q) ?? "").slice(0, 120);
@@ -40,7 +45,8 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
         <nav aria-label="주요 메뉴">
           <Link href="#grammar-map">문법 지도</Link>
           <Link href="#lesson-library">학습 자료</Link>
-          {editor ? <Link className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</Link> : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top"><FilePenLine aria-hidden="true" size={16} /> 편집실</a>}
+          {editor ? <Link className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</Link> : account?.role === "student" ? null : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top"><FilePenLine aria-hidden="true" size={16} /> 편집실</a>}
+          {account ? <form action="/api/studio/logout" method="post" className="account-session"><span>{account.displayName}</span><button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button></form> : sharedLoginEnabled ? <Link className="account-login" href="/login"><LogIn aria-hidden="true" size={15} /> 로그인</Link> : null}
           <a className="portal-link" href="https://lhsstart.synology.me">국어시간 홈</a>
         </nav>
       </header>
