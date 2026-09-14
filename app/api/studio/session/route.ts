@@ -20,10 +20,10 @@ export async function POST(request: Request) {
   const formData = await request.formData();
   const password = formData.get("password");
   if (typeof password !== "string" || !(await verifyAdminPassword(password))) {
-    return NextResponse.redirect(new URL("/studio/login?error=1", request.url), 303);
+    return redirectWithinSite("/studio/login?error=1");
   }
 
-  const response = NextResponse.redirect(new URL("/studio", request.url), 303);
+  const response = redirectWithinSite("/studio");
   response.cookies.set({
     name: ADMIN_SESSION_COOKIE,
     value: await createAdminSessionValue(),
@@ -41,4 +41,11 @@ function isHttpsRequest(request: Request): boolean {
     ?.split(",")[0]
     .trim();
   return forwardedProtocol === "https" || new URL(request.url).protocol === "https:";
+}
+
+function redirectWithinSite(path: string): NextResponse {
+  return new NextResponse(null, {
+    status: 303,
+    headers: { Location: path },
+  });
 }
