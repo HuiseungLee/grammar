@@ -11,7 +11,8 @@
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `TEACHER_EMAILS`, `STUDENT_EMAILS` (사용 중인 경우)
-- `ACCOUNT_SERVICE_URL=https://literature.lhsstart.synology.me`
+
+NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연결됩니다. 이 내부 주소는 `docker-compose.yml`에 고정되어 있으므로 `.env`에서 바꾸지 않습니다.
 
 `SUPABASE_SERVICE_ROLE_KEY`와 `TEACHER_INVITE_CODE`는 문학 사이트에만 보관합니다. 문법·진로 사이트의 회원가입 요청은 문학 사이트의 계정 API가 처리하므로 이 두 서버 비밀값을 복사하지 않습니다. 기존 `GRAMMAR_ADMIN_PASSWORD` 방식은 로그인 화면의 `기존 관리자 암호로 로그인`에서 비상용으로 유지됩니다.
 
@@ -25,7 +26,6 @@
 2. `.env.synology.example`을 `.env`로 복사하고 다음 값을 변경합니다.
    - `GRAMMAR_ADMIN_PASSWORD`: 편집실에서 사용할 강력한 암호
    - `GRAMMAR_SESSION_SECRET`: 충분히 긴 무작위 문자열
-   - `ACCOUNT_SERVICE_URL`: 기본값은 `https://literature.lhsstart.synology.me`
    - 선택 사항: 위의 문학 사이트 공개 Supabase 값
 3. `docker compose up -d --build`를 한 번 실행합니다.
 4. DSM 역방향 프록시에서 `grammar.lhsstart.synology.me`를 `http://127.0.0.1:7320`으로 연결합니다.
