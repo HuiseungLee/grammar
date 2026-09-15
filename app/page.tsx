@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   ArrowRight,
   CheckCircle2,
@@ -41,12 +40,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
   return (
     <main>
       <header className="site-header">
-        <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
+        <a className="brand" href="/"><span>수니기는</span> 문법시간</a>
         <nav aria-label="주요 메뉴">
-          <Link href="#grammar-map">문법 지도</Link>
-          <Link href="#lesson-library">학습 자료</Link>
-          {editor ? <Link className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</Link> : account?.role === "student" ? null : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top"><FilePenLine aria-hidden="true" size={16} /> 편집실</a>}
-          {account ? <form action="/api/studio/logout" method="post" className="account-session"><span>{account.displayName}</span><button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button></form> : sharedLoginEnabled ? <Link className="account-login" href="/login"><LogIn aria-hidden="true" size={15} /> 로그인</Link> : null}
+          <a href="#grammar-map">문법 지도</a>
+          <a href="#lesson-library">학습 자료</a>
+          {editor ? <a className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</a> : account?.role === "student" ? null : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top"><FilePenLine aria-hidden="true" size={16} /> 편집실</a>}
+          {account ? <form action="/api/studio/logout" method="post" className="account-session"><span>{account.displayName}</span><button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button></form> : sharedLoginEnabled ? <a className="account-login" href="/login"><LogIn aria-hidden="true" size={15} /> 로그인</a> : null}
           <a className="portal-link" href="https://lhsstart.synology.me">국어시간 홈</a>
         </nav>
       </header>
@@ -77,15 +76,15 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
             <h2 id="map-title">문법 지도</h2>
             <span>영역을 고르면 관련 개념과 새로 출판된 자료를 모아 볼 수 있습니다.</span>
           </div>
-          <Link className="text-action" href="#lesson-library">자료 전체 보기 <ArrowRight aria-hidden="true" size={17} /></Link>
+          <a className="text-action" href="#lesson-library">자료 전체 보기 <ArrowRight aria-hidden="true" size={17} /></a>
         </div>
         <div className="area-grid">
           {grammarAreas.map((area) => (
-            <Link className={`area-card tone-${area.tone}`} href={`/?domain=${encodeURIComponent(area.domain)}#lesson-library`} key={area.title}>
+            <a className={`area-card tone-${area.tone}`} href={`/?domain=${encodeURIComponent(area.domain)}#lesson-library`} key={area.title}>
               <span className="area-mark" aria-hidden="true">{area.mark}</span>
               <span className="area-copy"><strong>{area.title}</strong><b>{area.description}</b><small>{area.topics}</small></span>
               <ChevronRight className="area-arrow" aria-hidden="true" size={19} />
-            </Link>
+            </a>
           ))}
         </div>
       </section>
@@ -96,7 +95,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
           <span className="category-chip">음운 · 교체</span>
           <h2 id="focus-title">‘국물’은 왜<br />[궁물]로 소리 날까요?</h2>
           <p>받침 ‘ㄱ’ 뒤에 비음 ‘ㅁ’이 오면 ‘ㄱ’이 같은 자리에서 나는 비음 ‘ㅇ’으로 바뀝니다. 이것이 비음화예요.</p>
-          <Link className="primary-action" href="/lesson/nasalization">5분 개념 학습 <ArrowRight aria-hidden="true" size={18} /></Link>
+          <a className="primary-action" href="/lesson/nasalization">5분 개념 학습 <ArrowRight aria-hidden="true" size={18} /></a>
         </div>
         <div className="sound-board" aria-label="국물이 궁물로 발음되는 과정">
           <div className="board-topline"><span>표준 발음으로 읽기</span><Sparkles aria-hidden="true" size={17} /></div>

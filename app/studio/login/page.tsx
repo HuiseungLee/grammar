@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import { redirect } from "next/navigation";
 import { chatGPTSignInPath } from "@/app/chatgpt-auth";
@@ -32,7 +31,7 @@ export default async function StudioLoginPage({
   return (
     <main className="studio-login-page">
       <section className="studio-login-card" aria-labelledby="studio-login-title">
-        <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
+        <a className="brand" href="/"><span>수니기는</span> 문법시간</a>
         <div className="studio-login-icon" aria-hidden="true"><LockKeyhole /></div>
         <p className="eyebrow">TEACHER STUDIO</p>
         <h1 id="studio-login-title">문법 편집실</h1>
@@ -51,7 +50,7 @@ export default async function StudioLoginPage({
           {hasError ? <p className="studio-login-error" role="alert">암호가 맞지 않습니다.</p> : null}
           <button type="submit">편집실 들어가기</button>
         </form>
-        <Link className="studio-login-back" href="/">학습 사이트로 돌아가기</Link>
+        <a className="studio-login-back" href="/">학습 사이트로 돌아가기</a>
       </section>
     </main>
   );

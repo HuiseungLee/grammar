@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, BookOpenText, RotateCcw, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -102,11 +101,11 @@ export function LessonLibrary({ lessons, initialDomain = "all", initialQuery = "
       {visibleLessons.length > 0 ? (
         <div className="lesson-grid">
           {visibleLessons.map((lesson) => (
-            <Link className="lesson-card" href={`/lesson/${lesson.slug}`} key={`${lesson.id}-${lesson.slug}`}>
+            <a className="lesson-card" href={`/lesson/${lesson.slug}`} key={`${lesson.id}-${lesson.slug}`}>
               <div className="lesson-meta"><span className={`lesson-category ${toneForDomain(lesson.domain)}`}>{lesson.domain}</span><small>{lesson.schoolBand}</small></div>
               <h3>{lesson.title}</h3><p>{lesson.summary}</p>
               <footer><span><BookOpenText aria-hidden="true" size={15} /> {lesson.curriculumCode || "개념 학습"}</span><span>읽기 <ArrowRight aria-hidden="true" size={14} /></span></footer>
-            </Link>
+            </a>
           ))}
         </div>
       ) : (

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, BookOpenCheck, Brackets, CircleDot, GitCompareArrows } from "lucide-react";
 import { LessonPractice } from "@/components/lesson-practice";
@@ -28,12 +27,12 @@ export default async function LessonPage({ params }: LessonPageProps) {
   return (
     <main>
       <header className="site-header">
-        <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
-        <nav aria-label="주요 메뉴"><Link href="/#grammar-map">문법 지도</Link><Link href="/#lesson-library">학습 자료</Link>{editor ? <Link className="studio-link" href="/studio">편집실</Link> : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top">편집실</a>}</nav>
+        <a className="brand" href="/"><span>수니기는</span> 문법시간</a>
+        <nav aria-label="주요 메뉴"><a href="/#grammar-map">문법 지도</a><a href="/#lesson-library">학습 자료</a>{editor ? <a className="studio-link" href="/studio">편집실</a> : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top">편집실</a>}</nav>
       </header>
 
       <div className="lesson-shell">
-        <Link className="back-link" href="/#lesson-library"><ArrowLeft aria-hidden="true" size={17} /> 학습 자료로 돌아가기</Link>
+        <a className="back-link" href="/#lesson-library"><ArrowLeft aria-hidden="true" size={17} /> 학습 자료로 돌아가기</a>
         <article className="lesson-paper">
           <header className="lesson-hero">
             <div className="lesson-kicker"><span>{lesson.domain}</span><b>{lesson.schoolBand}</b></div>
@@ -74,7 +73,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 <LessonPractice practice={lesson.content.practice} />
               </section>
 
-              <footer className="lesson-end"><span>개념을 이해했다면 다른 예문에서도 같은 판별 기준을 적용해 보세요.</span><Link href="/#lesson-library">다음 자료 고르기 <ArrowRight aria-hidden="true" size={16} /></Link></footer>
+              <footer className="lesson-end"><span>개념을 이해했다면 다른 예문에서도 같은 판별 기준을 적용해 보세요.</span><a href="/#lesson-library">다음 자료 고르기 <ArrowRight aria-hidden="true" size={16} /></a></footer>
             </div>
           </div>
         </article>

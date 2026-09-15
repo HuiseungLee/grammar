@@ -376,3 +376,105 @@ button { cursor: pointer; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* The teacher edits the actual grammar lesson sheet, following the literature studio. */
+.studio-workspace { height: 100%; overflow: hidden; }
+.studio-workspace .editor-scroll { height: 100%; margin: 0; overflow-y: auto; }
+.grammar-teacher-inline { margin: 0 auto; max-width: 1050px; padding: 2.6rem 1.5rem 0; }
+.grammar-teacher-inline .teacher-head { align-items: end; display: flex; gap: 1rem; justify-content: space-between; margin: 0 0 1.5rem; }
+.grammar-teacher-inline .teacher-head p { color: var(--rose); font-size: .7rem; font-weight: 800; letter-spacing: .13em; margin: 0; }
+.grammar-teacher-inline .teacher-head h2 { font-family: "Noto Serif KR", Batang, serif; font-size: 1.9rem; letter-spacing: -.045em; margin: .35rem 0; }
+.grammar-teacher-inline .teacher-head > div > span { color: #697779; display: block; font-size: .8rem; line-height: 1.6; }
+.editor-status { border-radius: 999px; flex: 0 0 auto; font-size: .7rem; font-weight: 800; padding: .42rem .68rem; }
+.editor-status.draft { background: #e2e4e1; color: #687173; }
+.editor-status.published { background: #dcece2; color: #3f7157; }
+.lesson-editor-paper { border-color: #cbd6d0; box-shadow: 0 14px 34px rgba(29,51,36,.09); margin: 0 auto; max-width: 960px; }
+.lesson-editor-hero { padding-bottom: 1.75rem; }
+.publication-input { background: #f7faf8; border: 0; border-bottom: 1px dashed #9aa9a5; border-radius: 4px 4px 0 0; color: inherit; display: block; font: inherit; outline: none; padding: .28rem .4rem; width: 100%; }
+.publication-input:focus, .editor-meta-line input:focus, .editor-kicker select:focus, .repeat-field textarea:focus, .editor-example-row input:focus, .editor-example-row textarea:focus, .editor-compare-note textarea:focus, .practice-editor-card input:focus, .practice-editor-card textarea:focus { background: #fffdf7; box-shadow: 0 0 0 3px rgba(75,132,158,.2); outline: none; }
+.publication-input::placeholder, .lesson-editor-paper input::placeholder, .lesson-editor-paper textarea::placeholder { color: #8c9697; opacity: 1; }
+.lesson-title-input { color: var(--ink); font-family: "Noto Serif KR", Batang, serif; font-size: clamp(2.2rem, 5vw, 3.75rem); font-weight: 700; letter-spacing: -.065em; line-height: 1.24; margin: 1.15rem 0 .55rem; }
+.lesson-summary-input { color: #657176; line-height: 1.75; min-height: 4.2rem; resize: vertical; }
+.editor-kicker { align-items: stretch; flex-wrap: wrap; }
+.editor-kicker label { align-items: center; background: #eef4f4; border-radius: 6px; display: flex; gap: .4rem; padding-left: .58rem; }
+.editor-kicker label > span { background: transparent; color: #477081; font-size: .68rem; padding: 0; }
+.editor-kicker select { appearance: auto; background: transparent; border: 0; color: #2d5e71; cursor: pointer; font-size: .74rem; font-weight: 800; min-height: 34px; outline: none; padding: 0 .55rem 0 0; }
+.editor-meta-line { align-items: end; flex-wrap: wrap; gap: 1rem; }
+.editor-meta-line > label { color: #7c8789; display: grid; flex: 1 1 230px; font-size: .68rem; gap: .35rem; }
+.editor-meta-line input { background: #f8faf8; border: 0; border-bottom: 1px dashed #aeb8b5; color: #4d5a5e; min-height: 32px; outline: none; padding: .35rem .4rem; width: 100%; }
+.slug-field { align-items: center; display: flex; }
+.slug-field b { color: #8c9597; font-size: .7rem; font-weight: 500; }
+.slug-field input { flex: 1; min-width: 0; }
+.editor-lesson-rail { background: #fbfbf8; }
+.editor-lesson-block { scroll-margin-top: 1rem; }
+.opening-editor { border-bottom: 1px dashed #9aa9a5; border-left: 4px solid #79a9b9; color: #26353c; font-family: "Noto Serif KR", Batang, serif; font-size: clamp(1.35rem, 3vw, 1.95rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.72; min-height: 9rem; padding: 1rem 1.1rem; resize: vertical; }
+.opening-note-editor { color: #6e797c; font-size: .88rem; line-height: 1.8; margin: 1rem 0 0 1.4rem; min-height: 5rem; resize: vertical; width: calc(100% - 1.4rem); }
+.concept-editor { color: #3d484d; font-size: 1rem; line-height: 1.95; min-height: 12rem; resize: vertical; }
+.analysis-title-editor { font-family: "Noto Serif KR", Batang, serif; font-size: 1.5rem; font-weight: 700; letter-spacing: -.04em; margin: 0 0 1.15rem; }
+.editor-analysis-list { margin-bottom: .75rem; }
+.editor-analysis-list li { padding-right: .65rem; }
+.repeat-field { min-width: 0; padding-right: 2.25rem; position: relative; }
+.repeat-field textarea { background: transparent; border: 0; color: #465156; line-height: 1.75; min-height: 4.2rem; outline: none; padding: .2rem .35rem; resize: vertical; width: 100%; }
+.delete-inline { align-items: center; background: transparent; border: 0; color: #a34e5d; display: inline-flex; justify-content: center; padding: .35rem; position: absolute; right: .35rem; top: .35rem; }
+.delete-inline svg { height: 15px; width: 15px; }
+.delete-inline:disabled { color: #aab0ae; cursor: not-allowed; opacity: .5; }
+.add-inline { align-items: center; background: #f4faf7; border: 1px dashed #719b90; border-radius: 6px; color: #38645d; display: inline-flex; font-size: .72rem; font-weight: 800; gap: .35rem; margin: 0 0 1rem; padding: .52rem .7rem; }
+.add-inline svg { height: 14px; width: 14px; }
+.add-inline:disabled, .add-choice:disabled { cursor: not-allowed; opacity: .5; }
+.editor-example-list { margin-top: .8rem; overflow: visible; }
+.example-list > .editor-example-row { align-items: stretch; position: relative; }
+.editor-example-row > label { display: grid; gap: .35rem; min-width: 0; }
+.editor-example-row > label > span { font-size: .68rem; font-weight: 800; }
+.editor-example-row input, .editor-example-row textarea { background: #fbfdfb; border: 1px dashed #c4d0ca; border-radius: 5px; color: #475256; line-height: 1.65; min-width: 0; outline: none; padding: .55rem .65rem; width: 100%; }
+.editor-example-row > label:first-child input { font-family: "Noto Serif KR", Batang, serif; font-size: .94rem; font-weight: 700; }
+.editor-example-row textarea { min-height: 4.5rem; resize: vertical; }
+.editor-example-row > .delete-inline { right: -.55rem; top: -.55rem; }
+.editor-compare-note textarea { background: rgba(255,255,255,.54); border: 1px dashed #9fb5b0; border-radius: 5px; color: #4f5e61; line-height: 1.85; min-height: 8.5rem; outline: none; padding: .7rem; resize: vertical; width: 100%; }
+.practice-editor-card { display: grid; gap: .8rem; }
+.practice-prompt-editor { background: #203c49; border: 1px dashed #78909a; border-radius: 7px; color: white; font-family: "Noto Serif KR", Batang, serif; font-size: 1.3rem; font-weight: 700; line-height: 1.6; min-height: 7rem; outline: none; padding: .8rem; resize: vertical; width: 100%; }
+.practice-editor-card textarea::placeholder, .practice-editor-card input::placeholder { color: #b8c8ce; }
+.practice-editor-options { display: grid; gap: .55rem; }
+.practice-editor-option { align-items: center; background: #203c49; border: 1px solid #3e5a67; border-radius: 8px; display: grid; gap: .55rem; grid-template-columns: auto minmax(0, 1fr) auto; padding: .5rem .6rem; }
+.answer-radio { align-items: center; cursor: pointer; display: flex; }
+.answer-radio input { accent-color: #9fd0dc; height: 17px; margin: 0 .45rem 0 0; width: 17px; }
+.answer-radio b { align-items: center; background: #385765; border-radius: 50%; display: inline-flex; font-size: .72rem; height: 25px; justify-content: center; width: 25px; }
+.practice-editor-option > input { background: transparent; border: 0; border-bottom: 1px dashed #78909a; color: white; min-height: 38px; outline: none; padding: .4rem .25rem; width: 100%; }
+.practice-editor-option > button { align-items: center; background: transparent; border: 0; color: #e8b6bd; display: flex; padding: .35rem; }
+.practice-editor-option > button svg { height: 15px; width: 15px; }
+.practice-editor-option > button:disabled { color: #77909a; cursor: not-allowed; opacity: .5; }
+.add-choice { align-items: center; align-self: start; background: #294956; border: 1px dashed #7194a2; border-radius: 6px; color: #d9e7ea; display: inline-flex; font-size: .72rem; font-weight: 800; gap: .35rem; justify-self: start; padding: .52rem .7rem; }
+.add-choice svg { height: 14px; width: 14px; }
+.practice-explanation-label { color: #91c2cc; font-size: .7rem; font-weight: 800; letter-spacing: .08em; margin-top: .45rem; }
+.practice-explanation-editor { background: #203c49; border: 1px dashed #78909a; border-radius: 7px; color: #e1e9eb; line-height: 1.72; min-height: 7rem; outline: none; padding: .75rem; resize: vertical; width: 100%; }
+.publish-bar { align-items: center; display: flex; gap: .6rem; justify-content: flex-end; margin: 1.1rem auto 0; max-width: 960px; }
+.grammar-publish-bar { backdrop-filter: blur(10px); background: rgba(238,240,236,.94); border-top: 1px solid #cbd3cf; bottom: 0; box-shadow: 0 -10px 24px rgba(27,43,40,.08); padding: .8rem 0 1rem; position: sticky; z-index: 20; }
+.publish-status-copy { color: #6f7a7d; font-size: .72rem; margin-right: auto; max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.publish-bar a, .publish-bar button { align-items: center; background: white; border: 1px solid #94a7a1; border-radius: 7px; color: #344146; display: inline-flex; font-size: .76rem; font-weight: 800; gap: .38rem; justify-content: center; min-height: 42px; padding: .65rem .85rem; }
+.publish-bar button svg { height: 16px; width: 16px; }
+.publish-bar .primary { background: var(--navy); border-color: var(--navy); color: white; }
+.publish-bar button:disabled { cursor: wait; opacity: .58; }
+
+@media (max-width: 900px) {
+  .grammar-teacher-inline { padding-left: 1rem; padding-right: 1rem; }
+  .lesson-editor-paper .lesson-layout { grid-template-columns: 145px minmax(0, 1fr); }
+  .lesson-editor-paper .lesson-content { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+
+@media (max-width: 680px) {
+  .studio-workspace .editor-scroll { height: 100%; }
+  .grammar-teacher-inline { padding: 1.3rem .65rem 0; }
+  .grammar-teacher-inline .teacher-head { align-items: start; }
+  .grammar-teacher-inline .teacher-head h2 { font-size: 1.45rem; }
+  .grammar-teacher-inline .teacher-head > div > span { font-size: .72rem; }
+  .lesson-editor-hero { padding: 1.8rem 1.1rem 1.4rem; }
+  .lesson-title-input { font-size: 2rem; }
+  .editor-meta-line { align-items: stretch; flex-direction: column; }
+  .lesson-editor-paper .lesson-layout { display: block; }
+  .lesson-editor-paper .lesson-content { padding: 1.8rem 1rem 2.5rem; }
+  .opening-note-editor { margin-left: 0; width: 100%; }
+  .example-list > .editor-example-row { grid-template-columns: 1fr; padding: .8rem; }
+  .grammar-publish-bar { flex-wrap: wrap; padding: .65rem 0 calc(.65rem + env(safe-area-inset-bottom)); }
+  .publish-status-copy { flex: 1 0 100%; max-width: none; }
+  .publish-bar a, .publish-bar button { flex: 1; min-width: 0; padding-left: .45rem; padding-right: .45rem; }
+  .publish-bar button { white-space: nowrap; }
+}

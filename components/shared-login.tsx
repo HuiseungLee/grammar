@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 import { FormEvent, useEffect, useState } from "react";
 import {
@@ -148,7 +147,7 @@ export function SharedLogin({
   return (
     <main className="studio-login-page">
       <section className="studio-login-card shared-auth-card" aria-labelledby="studio-login-title">
-        <Link className="brand" href="/"><span>수니기는</span> 문법시간</Link>
+        <a className="brand" href="/"><span>수니기는</span> 문법시간</a>
         <div className="studio-login-icon" aria-hidden="true"><LockKeyhole /></div>
         <p className="eyebrow">LHSSTART ACCOUNT</p>
         <h1 id="studio-login-title">{mode === "signup" ? "계정 만들기" : mode === "verify" ? "이메일 확인" : "통합 로그인"}</h1>
@@ -174,8 +173,8 @@ export function SharedLogin({
           {mode === "verify" ? <button className="auth-secondary" type="button" disabled={loading} onClick={() => void resendVerification()}>확인 코드 다시 받기</button> : null}
           <button className="auth-secondary" type="button" onClick={() => { setMessage(""); setMode(mode === "login" ? "signup" : "login"); }}>{mode === "login" ? "회원가입으로 이동" : "로그인으로 돌아가기"}</button>
         </form>
-        {legacyLoginHref ? <Link className="studio-login-back" href={legacyLoginHref}>기존 관리자 암호로 로그인</Link> : null}
-        <Link className="studio-login-back" href="/">학습 사이트로 돌아가기</Link>
+        {legacyLoginHref ? <a className="studio-login-back" href={legacyLoginHref}>기존 관리자 암호로 로그인</a> : null}
+        <a className="studio-login-back" href="/">학습 사이트로 돌아가기</a>
       </section>
     </main>
   );
