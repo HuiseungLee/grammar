@@ -5,19 +5,23 @@ const node = process.execPath;
 const wrangler = "./node_modules/wrangler/bin/wrangler.js";
 const config = "dist/server/wrangler.json";
 const stateDirectory = "/data";
-const migrationMarker = `${stateDirectory}/.grammar-schema-v1`;
+const migrations = [
+  { marker: `${stateDirectory}/.grammar-schema-v1`, file: "drizzle/0000_futuristic_sugar_man.sql" },
+  { marker: `${stateDirectory}/.grammar-schema-v2-comments`, file: "drizzle/0001_grammar_comments.sql" },
+];
 
-if (!existsSync(migrationMarker)) {
+for (const migrationDefinition of migrations) {
+  if (existsSync(migrationDefinition.marker)) continue;
   const migration = spawnSync(node, [
     "--import", "./scripts/sites-env.mjs", wrangler,
     "d1", "execute", "DB", "--local",
     "--config", config,
     "--persist-to", stateDirectory,
-    "--file", "drizzle/0000_futuristic_sugar_man.sql",
+    "--file", migrationDefinition.file,
   ], { stdio: "inherit", env: process.env });
 
   if (migration.status !== 0) process.exit(migration.status ?? 1);
-  writeFileSync(migrationMarker, new Date().toISOString(), "utf8");
+  writeFileSync(migrationDefinition.marker, new Date().toISOString(), "utf8");
 }
 
 const variableArguments = [];

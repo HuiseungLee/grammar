@@ -7,6 +7,7 @@ import {
   CircleDot,
   GitCompareArrows,
   Loader2,
+  MessageCircleQuestion,
   Plus,
   Save,
   Send,
@@ -17,7 +18,6 @@ import { Toaster } from "@/components/ui/sonner";
 import {
   EMPTY_LESSON_CONTENT,
   GRAMMAR_DOMAINS,
-  SCHOOL_BANDS,
   type GrammarLesson,
   type LessonInput,
   type LessonStatus,
@@ -25,7 +25,6 @@ import {
 
 const MAX_STEPS = 12;
 const MAX_EXAMPLES = 12;
-const MAX_CHOICES = 6;
 
 export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson }) {
   const [lesson, setLesson] = useState<LessonInput>(() => makeInitialLesson(initialLesson));
@@ -87,49 +86,6 @@ export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson 
     }));
   }
 
-  function setPractice<K extends keyof LessonInput["content"]["practice"]>(key: K, value: LessonInput["content"]["practice"][K]) {
-    setLesson((current) => ({
-      ...current,
-      content: { ...current.content, practice: { ...current.content.practice, [key]: value } },
-    }));
-  }
-
-  function setChoice(index: number, value: string) {
-    setLesson((current) => ({
-      ...current,
-      content: {
-        ...current.content,
-        practice: {
-          ...current.content.practice,
-          choices: current.content.practice.choices.map((choice, choiceIndex) => choiceIndex === index ? value : choice),
-        },
-      },
-    }));
-  }
-
-  function addChoice() {
-    setLesson((current) => current.content.practice.choices.length >= MAX_CHOICES ? current : ({
-      ...current,
-      content: {
-        ...current.content,
-        practice: { ...current.content.practice, choices: [...current.content.practice.choices, ""] },
-      },
-    }));
-  }
-
-  function removeChoice(index: number) {
-    setLesson((current) => {
-      const practice = current.content.practice;
-      if (practice.choices.length <= 2) return current;
-      const choices = practice.choices.filter((_, choiceIndex) => choiceIndex !== index);
-      const answerIndex = practice.answerIndex === index ? 0 : practice.answerIndex > index ? practice.answerIndex - 1 : practice.answerIndex;
-      return {
-        ...current,
-        content: { ...current.content, practice: { ...practice, choices, answerIndex } },
-      };
-    });
-  }
-
   async function save(status: LessonStatus) {
     setSaving(status);
     try {
@@ -159,7 +115,7 @@ export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson 
             <div>
               <p>TEACHER STUDIO</p>
               <h2>출판 지면에서 바로 작성하기</h2>
-              <span>학생이 읽게 될 화면에서 제목·개념·예문·확인 문제를 곧바로 편집합니다.</span>
+              <span>학생이 읽게 될 화면에서 제목·개념·예문을 곧바로 편집합니다. 옛한글 지원 글꼴도 자동 적용됩니다.</span>
             </div>
             <span className={`editor-status ${lesson.status}`}>{lesson.status === "published" ? "출판됨" : "초안"}</span>
           </div>
@@ -172,12 +128,6 @@ export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson 
                     <span>문법 영역</span>
                     <select value={lesson.domain} onChange={(event) => setField("domain", event.target.value)}>
                       {GRAMMAR_DOMAINS.map((domain) => <option key={domain} value={domain}>{domain}</option>)}
-                    </select>
-                  </label>
-                  <label>
-                    <span>학교급</span>
-                    <select value={lesson.schoolBand} onChange={(event) => setField("schoolBand", event.target.value)}>
-                      {SCHOOL_BANDS.map((band) => <option key={band} value={band}>{band}</option>)}
                     </select>
                   </label>
                 </div>
@@ -200,25 +150,21 @@ export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson 
                   value={lesson.summary}
                   onChange={(event) => setField("summary", event.target.value)}
                 />
-                <div className="lesson-meta-line editor-meta-line">
-                  <label><span>교육과정</span><input maxLength={100} placeholder="예: [9국04-04]" value={lesson.curriculumCode} onChange={(event) => setField("curriculumCode", event.target.value)} /></label>
-                  <label><span>자료 주소</span><span className="slug-field"><b>/lesson/</b><input maxLength={100} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="비워 두면 자동 생성" value={lesson.slug} onChange={(event) => setField("slug", event.target.value.toLowerCase().trim())} /></span></label>
-                </div>
               </header>
 
               <div className="lesson-layout">
                 <aside className="lesson-rail editor-lesson-rail" aria-label="편집할 부분 바로가기">
-                  <a href="#editor-opening">첫 문장</a>
+                  <a href="#editor-opening">들어가기</a>
                   <a href="#editor-concept">핵심 개념</a>
                   <a href="#editor-analysis">문장 해부</a>
                   <a href="#editor-compare">헷갈림 비교</a>
-                  <a href="#editor-check">확인 문제</a>
+                  <a href="#editor-qna">Q&amp;A</a>
                 </aside>
 
                 <div className="lesson-content">
                   <section id="editor-opening" className="lesson-block opening-block editor-lesson-block">
-                    <div className="block-title"><CircleDot aria-hidden="true" /><span>첫 문장</span></div>
-                    <label className="sr-only" htmlFor="lesson-editor-opening">수업을 여는 문장</label>
+                    <div className="block-title"><CircleDot aria-hidden="true" /><span>들어가기</span></div>
+                    <label className="sr-only" htmlFor="lesson-editor-opening">들어가기 문장</label>
                     <textarea
                       className="publication-input opening-editor"
                       id="lesson-editor-opening"
@@ -296,30 +242,9 @@ export function StudioEditor({ initialLesson }: { initialLesson?: GrammarLesson 
                     </div>
                   </section>
 
-                  <section id="editor-check" className="lesson-block editor-lesson-block">
-                    <div className="block-title"><BookOpenCheck aria-hidden="true" /><span>확인 문제</span></div>
-                    <div className="practice-card practice-editor-card">
-                      <p className="practice-label">CHECK YOUR GRAMMAR</p>
-                      <label className="sr-only" htmlFor="lesson-editor-prompt">확인 문제</label>
-                      <textarea id="lesson-editor-prompt" className="practice-prompt-editor" maxLength={2000} placeholder="한 개념을 정확히 확인하는 문제를 적어 주세요." value={lesson.content.practice.prompt} onChange={(event) => setPractice("prompt", event.target.value)} />
-                      <div className="practice-editor-options">
-                        {lesson.content.practice.choices.map((choice, index) => (
-                          <div className="practice-editor-option" key={index}>
-                            <label className="answer-radio" title="정답으로 지정">
-                              <input type="radio" name="answer" checked={lesson.content.practice.answerIndex === index} onChange={() => setPractice("answerIndex", index)} />
-                              <b>{index + 1}</b>
-                              <span className="sr-only">선택지 {index + 1}을 정답으로 지정</span>
-                            </label>
-                            <label className="sr-only" htmlFor={`practice-choice-${index}`}>선택지 {index + 1}</label>
-                            <input id={`practice-choice-${index}`} maxLength={500} placeholder={`선택지 ${index + 1}`} value={choice} onChange={(event) => setChoice(index, event.target.value)} />
-                            <button type="button" disabled={lesson.content.practice.choices.length <= 2} aria-label={`선택지 ${index + 1} 삭제`} onClick={() => removeChoice(index)}><Trash2 aria-hidden="true" /></button>
-                          </div>
-                        ))}
-                      </div>
-                      <button className="add-choice" type="button" disabled={lesson.content.practice.choices.length >= MAX_CHOICES} onClick={addChoice}><Plus aria-hidden="true" /> 선택지 추가</button>
-                      <label className="practice-explanation-label" htmlFor="lesson-editor-explanation">정답 풀이</label>
-                      <textarea id="lesson-editor-explanation" className="practice-explanation-editor" maxLength={4000} placeholder="왜 이것이 정답인지 판별 기준을 넣어 설명해 주세요." value={lesson.content.practice.explanation} onChange={(event) => setPractice("explanation", event.target.value)} />
-                    </div>
+                  <section id="editor-qna" className="lesson-block editor-lesson-block">
+                    <div className="block-title"><MessageCircleQuestion aria-hidden="true" /><span>Q&amp;A</span></div>
+                    <div className="editor-qna-preview"><strong>학생 질문과 교사 답변</strong><p>출판 후 로그인한 학생이 이 자료에 질문을 남기면, 교사 계정으로 답변할 수 있습니다.</p></div>
                   </section>
                 </div>
               </div>
@@ -360,7 +285,7 @@ function makeInitialLesson(lesson?: GrammarLesson): LessonInput {
     slug: "",
     title: "",
     summary: "",
-    schoolBand: SCHOOL_BANDS[0],
+    schoolBand: "중학교",
     domain: GRAMMAR_DOMAINS[0],
     curriculumCode: "",
     status: "draft",

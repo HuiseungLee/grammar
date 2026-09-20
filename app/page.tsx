@@ -11,19 +11,19 @@ import {
 import { LessonLibrary } from "@/components/lesson-library";
 import {
   getGrammarEditorUser,
-  grammarEditorEntryPath,
 } from "@/lib/editor-access";
 import { getPublishedLessons } from "@/lib/grammar-data";
 import { GRAMMAR_DOMAINS } from "@/lib/lesson-types";
 import { getSharedUserFromCookies, isSharedAuthConfigured } from "@/lib/supabase-auth";
 
 const grammarAreas = [
-  { mark: "音", title: "음운", domain: "음운·문자", description: "소리의 체계와 변동", topics: "음운 체계 · 교체 · 탈락 · 첨가 · 축약", tone: "sky" },
-  { mark: "語", title: "단어", domain: "단어·품사", description: "형태소와 품사, 단어의 짜임", topics: "형태소 · 품사 · 파생어 · 합성어", tone: "green" },
-  { mark: "文", title: "문장과 표현", domain: "문장·문법 요소", description: "문장의 구조와 문법 요소", topics: "문장 성분 · 문장의 짜임 · 높임 · 피동 · 사동", tone: "amber" },
-  { mark: "準", title: "어문 규범", domain: "어문 규범·국어 생활", description: "맞춤법과 바른 국어 생활", topics: "맞춤법 · 띄어쓰기 · 표준 발음", tone: "rose" },
-  { mark: "義", title: "의미와 담화", domain: "담화·의미", description: "말의 의미와 맥락", topics: "단어의 의미 · 담화 · 지시와 접속", tone: "violet" },
-  { mark: "古", title: "국어사", domain: "국어의 역사", description: "우리말의 역사와 변화", topics: "훈민정음 · 중세 국어 · 근대 국어", tone: "slate" },
+  { mark: "言", title: "언어학 개론", domain: "언어학 개론", description: "언어의 본질과 구조", topics: "언어의 특성 · 의미 · 담화 · 언어와 사회", tone: "violet" },
+  { mark: "音", title: "음운론", domain: "음운론", description: "말소리의 체계와 변동", topics: "음운 체계 · 교체 · 탈락 · 첨가 · 축약", tone: "sky" },
+  { mark: "形", title: "형태론", domain: "형태론", description: "형태소와 단어의 구조", topics: "형태소 · 품사 · 파생어 · 합성어", tone: "green" },
+  { mark: "統", title: "통사론", domain: "통사론", description: "문장의 구조와 문법 요소", topics: "문장 성분 · 문장의 짜임 · 높임 · 피동 · 사동", tone: "amber" },
+  { mark: "中", title: "중세국어", domain: "중세국어", description: "옛말의 문자와 문법", topics: "훈민정음 · 표기 · 음운 · 문법 · 어휘", tone: "rose" },
+  { mark: "準", title: "국어규범", domain: "국어규범", description: "바른 표기와 발음", topics: "맞춤법 · 띄어쓰기 · 표준어 · 표준 발음", tone: "slate" },
+  { mark: "史", title: "국어사", domain: "국어사", description: "우리말의 역사와 변화", topics: "고대 국어 · 중세 국어 · 근대 국어 · 현대 국어", tone: "indigo" },
 ];
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ domain?: string | string[]; q?: string | string[] }> }) {
@@ -44,7 +44,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
         <nav aria-label="주요 메뉴">
           <a href="#grammar-map">문법 지도</a>
           <a href="#lesson-library">학습 자료</a>
-          {editor ? <a className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</a> : account?.role === "student" ? null : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top"><FilePenLine aria-hidden="true" size={16} /> 편집실</a>}
+          {editor ? <a className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</a> : null}
           {account ? <form action="/api/studio/logout" method="post" className="account-session"><span>{account.displayName}</span><button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button></form> : sharedLoginEnabled ? <a className="account-login" href="/login"><LogIn aria-hidden="true" size={15} /> 로그인</a> : null}
           <a className="portal-link" href="https://lhsstart.synology.me">국어시간 홈</a>
         </nav>
@@ -92,7 +92,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
       <section className="focus-section" aria-labelledby="focus-title">
         <div className="focus-copy">
           <p className="eyebrow">TODAY&apos;S GRAMMAR</p>
-          <span className="category-chip">음운 · 교체</span>
+          <span className="category-chip">음운론 · 교체</span>
           <h2 id="focus-title">‘국물’은 왜<br />[궁물]로 소리 날까요?</h2>
           <p>받침 ‘ㄱ’ 뒤에 비음 ‘ㅁ’이 오면 ‘ㄱ’이 같은 자리에서 나는 비음 ‘ㅇ’으로 바뀝니다. 이것이 비음화예요.</p>
           <a className="primary-action" href="/lesson/nasalization">5분 개념 학습 <ArrowRight aria-hidden="true" size={18} /></a>

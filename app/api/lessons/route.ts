@@ -91,14 +91,10 @@ function parseLessonInput(value: unknown): { input: LessonInput } | { error: str
   if (input.status === "published") {
     if (!input.title.trim()) return { error: "출판하려면 제목을 입력해 주세요." };
     if (!input.summary.trim()) return { error: "출판하려면 한 줄 요약을 입력해 주세요." };
-    if (!content.opening.trim()) return { error: "출판하려면 수업을 여는 문장을 입력해 주세요." };
+    if (!content.opening.trim()) return { error: "출판하려면 들어가기 문장을 입력해 주세요." };
     if (!content.concept.trim()) return { error: "출판하려면 핵심 개념을 입력해 주세요." };
     if (!analysisSteps.some((step) => step.trim())) return { error: "출판하려면 분석 단계를 하나 이상 입력해 주세요." };
     if (!examples.some((example) => example.sentence.trim())) return { error: "출판하려면 예문을 하나 이상 입력해 주세요." };
-    if (!practice.prompt.trim()) return { error: "출판하려면 확인 문제를 입력해 주세요." };
-    if (choices.length < 2 || !choices.every((choice) => choice.trim())) return { error: "출판하려면 선택지를 두 개 이상 모두 입력해 주세요." };
-    if (answerIndex >= choices.length) return { error: "출판하려면 올바른 정답 선택지를 지정해 주세요." };
-    if (!practice.explanation.trim()) return { error: "출판하려면 정답 풀이를 입력해 주세요." };
   }
 
   return {

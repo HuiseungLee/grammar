@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, BookOpenCheck, Brackets, CircleDot, GitCompareArrows } from "lucide-react";
-import { LessonPractice } from "@/components/lesson-practice";
-import { getGrammarEditorUser, grammarEditorEntryPath } from "@/lib/editor-access";
+import { ArrowLeft, ArrowRight, BookOpenCheck, Brackets, CircleDot, GitCompareArrows, MessageCircleQuestion } from "lucide-react";
+import { LessonQna } from "@/components/lesson-qna";
+import { getGrammarEditorUser } from "@/lib/editor-access";
+import { getLessonComments } from "@/lib/grammar-comments";
 import { getLessonBySlug } from "@/lib/grammar-data";
+import { getSharedUserFromCookies } from "@/lib/supabase-auth";
 
 type LessonPageProps = { params: Promise<{ slug: string }> };
 
@@ -20,34 +22,34 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
 }
 
 export default async function LessonPage({ params }: LessonPageProps) {
-  const [{ slug }, editor] = await Promise.all([params, getGrammarEditorUser()]);
-  const lesson = await getLessonBySlug(slug);
+  const [{ slug }, editor, account] = await Promise.all([params, getGrammarEditorUser(), getSharedUserFromCookies()]);
+  const [lesson, comments] = await Promise.all([getLessonBySlug(slug), getLessonComments(slug)]);
   if (!lesson) notFound();
 
   return (
     <main>
       <header className="site-header">
         <a className="brand" href="/"><span>수니기는</span> 문법시간</a>
-        <nav aria-label="주요 메뉴"><a href="/#grammar-map">문법 지도</a><a href="/#lesson-library">학습 자료</a>{editor ? <a className="studio-link" href="/studio">편집실</a> : <a className="studio-link" href={grammarEditorEntryPath("/studio")} target="_top">편집실</a>}</nav>
+        <nav aria-label="주요 메뉴"><a href="/#grammar-map">문법 지도</a><a href="/#lesson-library">학습 자료</a>{editor ? <a className="studio-link" href="/studio">편집실</a> : null}</nav>
       </header>
 
       <div className="lesson-shell">
         <a className="back-link" href="/#lesson-library"><ArrowLeft aria-hidden="true" size={17} /> 학습 자료로 돌아가기</a>
         <article className="lesson-paper">
           <header className="lesson-hero">
-            <div className="lesson-kicker"><span>{lesson.domain}</span><b>{lesson.schoolBand}</b></div>
+            <div className="lesson-kicker"><span>{lesson.domain}</span></div>
             <h1>{lesson.title}</h1>
             <p>{lesson.summary}</p>
-            <div className="lesson-meta-line"><span>{lesson.curriculumCode || "개념 학습"}</span><span>{formatDate(lesson.publishedAt)}</span></div>
+            <div className="lesson-meta-line"><span>{formatDate(lesson.publishedAt)}</span></div>
           </header>
 
           <div className="lesson-layout">
             <aside className="lesson-rail" aria-label="이 자료의 차례">
-              <a href="#opening">첫 문장</a><a href="#concept">핵심 개념</a><a href="#analysis">문장 해부</a><a href="#compare">헷갈림 비교</a><a href="#check">확인 문제</a>
+              <a href="#opening">들어가기</a><a href="#concept">핵심 개념</a><a href="#analysis">문장 해부</a><a href="#compare">헷갈림 비교</a><a href="#qna">Q&amp;A</a>
             </aside>
             <div className="lesson-content">
               <section id="opening" className="lesson-block opening-block">
-                <div className="block-title"><CircleDot aria-hidden="true" /><span>첫 문장</span></div>
+                <div className="block-title"><CircleDot aria-hidden="true" /><span>들어가기</span></div>
                 <blockquote>{lesson.content.opening}</blockquote><p>{lesson.content.openingNote}</p>
               </section>
 
@@ -68,9 +70,9 @@ export default async function LessonPage({ params }: LessonPageProps) {
                 <div className="compare-note"><h2>같아 보여도 판별 기준은 달라요.</h2><p>{lesson.content.comparison}</p></div>
               </section>
 
-              <section id="check" className="lesson-block">
-                <div className="block-title"><BookOpenCheck aria-hidden="true" /><span>확인 문제</span></div>
-                <LessonPractice practice={lesson.content.practice} />
+              <section id="qna" className="lesson-block qna-block">
+                <div className="block-title"><MessageCircleQuestion aria-hidden="true" /><span>Q&amp;A</span></div>
+                <LessonQna lessonSlug={lesson.slug} initialComments={comments} user={account ? { id: account.id, role: account.role, displayName: account.displayName } : null} />
               </section>
 
               <footer className="lesson-end"><span>개념을 이해했다면 다른 예문에서도 같은 판별 기준을 적용해 보세요.</span><a href="/#lesson-library">다음 자료 고르기 <ArrowRight aria-hidden="true" size={16} /></a></footer>

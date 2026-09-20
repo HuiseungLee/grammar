@@ -22,7 +22,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "‘국물’은 왜 [궁물]로 소리 날까요?",
     summary: "소리가 이어질 때 일어나는 비음화를 발음 위치와 방법으로 이해합니다.",
     schoolBand: "중학교",
-    domain: "음운·문자",
+    domain: "음운론",
     curriculumCode: "[9국04-02] 음운 변동",
     status: "published",
     publishedAt: "2026-09-10",
@@ -57,7 +57,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "문장 속에 문장이 들어갈 때",
     summary: "관형절을 안은 문장을 두 문장으로 펼치며 안긴문장의 역할을 파악합니다.",
     schoolBand: "중학교",
-    domain: "문장·문법 요소",
+    domain: "통사론",
     curriculumCode: "[9국04-04] 문장의 짜임",
     status: "published",
     publishedAt: "2026-09-08",
@@ -92,7 +92,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "피동과 사동, 문장의 방향이 달라져요",
     summary: "주체와 대상의 관계를 바꾸어 보며 피동 표현과 사동 표현을 구별합니다.",
     schoolBand: "중학교",
-    domain: "문장·문법 요소",
+    domain: "통사론",
     curriculumCode: "[9국04-05] 문법 요소",
     status: "published",
     publishedAt: "2026-09-05",
@@ -126,7 +126,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "파생어와 합성어를 가르는 기준",
     summary: "어근과 접사를 표시해 복합어의 짜임을 정확히 판별합니다.",
     schoolBand: "중학교",
-    domain: "단어·품사",
+    domain: "형태론",
     curriculumCode: "[9국04-03] 단어의 짜임",
     status: "published",
     publishedAt: "2026-09-02",
@@ -161,7 +161,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "훈민정음의 자음자는 어떻게 만들어졌을까?",
     summary: "기본자와 가획자의 관계를 발음 기관의 모양과 소리의 세기로 이해합니다.",
     schoolBand: "고등학교 공통국어",
-    domain: "국어의 역사",
+    domain: "중세국어",
     curriculumCode: "국어의 역사와 한글",
     status: "published",
     publishedAt: "2026-08-28",
@@ -196,7 +196,7 @@ export const BUILT_IN_LESSONS: GrammarLesson[] = [
     title: "‘할 수 있다’는 왜 띄어 쓸까요?",
     summary: "의존 명사와 조사를 구별해 자주 틀리는 띄어쓰기의 원리를 익힙니다.",
     schoolBand: "중학교",
-    domain: "어문 규범·국어 생활",
+    domain: "국어규범",
     curriculumCode: "한글 맞춤법과 국어 생활",
     status: "published",
     publishedAt: "2026-08-24",
@@ -250,9 +250,21 @@ function parseContent(value: string): LessonContent {
 function rowToLesson(row: LessonRow): GrammarLesson {
   return {
     id: row.id, slug: row.slug, title: row.title, summary: row.summary,
-    schoolBand: row.school_band, domain: row.domain, curriculumCode: row.curriculum_code,
+    schoolBand: row.school_band, domain: normalizeDomain(row.domain), curriculumCode: row.curriculum_code,
     status: row.status, content: parseContent(row.content_json), publishedAt: row.published_at,
   };
+}
+
+function normalizeDomain(domain: string): string {
+  const legacyDomains: Record<string, string> = {
+    "음운·문자": "음운론",
+    "단어·품사": "형태론",
+    "문장·문법 요소": "통사론",
+    "담화·의미": "언어학 개론",
+    "국어의 역사": "국어사",
+    "어문 규범·국어 생활": "국어규범",
+  };
+  return legacyDomains[domain] ?? domain;
 }
 
 export async function getPublishedLessons(): Promise<GrammarLesson[]> {

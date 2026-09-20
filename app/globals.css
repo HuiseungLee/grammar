@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
+@font-face { font-family: "NanumBarunGothicYetHangul"; src: url("/fonts/NanumBarunGothic-YetHangul.woff2") format("woff2"); font-style: normal; font-weight: 400 700; font-display: swap; }
+@font-face { font-family: "NanumMyeongjoYetHangul"; src: url("/fonts/NanumMyeongjo-YetHangul.ttf") format("truetype"); font-style: normal; font-weight: 400; font-display: swap; }
+
 :root {
   --ink: #20272d; --paper: #f5f5f1; --line: #d8d9d4; --navy: #172d3a;
   --blue: #2c6f91; --rose: #a65f6b; --muted: #68747a; --white: #fff;
@@ -23,11 +26,11 @@
   --color-border: var(--border); --color-input: var(--input); --color-ring: var(--ring);
   --radius-sm: calc(var(--radius) - 4px); --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius); --radius-xl: calc(var(--radius) + 5px);
-  --font-sans: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-sans: "NanumBarunGothicYetHangul", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { background: var(--paper); color: var(--ink); margin: 0; font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 16px; }
+body { background: var(--paper); color: var(--ink); margin: 0; font-family: "NanumBarunGothicYetHangul", "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 16px; }
 button, input { font: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 a { color: inherit; text-decoration: none; }
@@ -67,7 +70,7 @@ button { cursor: pointer; }
 .section-heading > div > span { color: var(--muted); display: block; font-size: .9rem; margin-top: .65rem; }
 .text-action { align-items: center; background: transparent; border: 0; color: #42677a; display: flex; font-size: .86rem; font-weight: 700; gap: .35rem; padding: .5rem 0; }
 .text-action:hover { color: var(--navy); }
-.area-grid { display: grid; gap: .75rem; grid-template-columns: repeat(3, 1fr); }
+.area-grid { display: grid; gap: .75rem; grid-template-columns: repeat(4, 1fr); }
 .area-card { align-items: center; background: white; border: 1px solid var(--line); border-radius: 11px; color: var(--ink); display: grid; gap: .9rem; grid-template-columns: auto 1fr auto; min-height: 118px; padding: 1.25rem; text-align: left; transition: border-color .18s, box-shadow .18s, transform .18s; }
 .area-card:hover { border-color: #aebcbd; box-shadow: 0 10px 24px rgba(30,47,53,.07); transform: translateY(-2px); }
 .area-mark { align-items: center; border-radius: 9px; display: flex; font-family: "Noto Serif KR", Batang, serif; font-size: 1.25rem; font-weight: 700; height: 46px; justify-content: center; width: 46px; }
@@ -82,6 +85,7 @@ button { cursor: pointer; }
 .tone-rose { --tone-bg: #f1dfe1; --tone-fg: #8a4f59; }
 .tone-violet { --tone-bg: #e8e1ef; --tone-fg: #66517c; }
 .tone-slate { --tone-bg: #e3e7e9; --tone-fg: #4b606a; }
+.tone-indigo { --tone-bg: #e1e5f2; --tone-fg: #4d5d8a; }
 .area-mark, .lesson-category { background: var(--tone-bg); color: var(--tone-fg); }
 
 .focus-section { align-items: stretch; background: var(--navy); color: white; display: grid; gap: clamp(2.5rem, 7vw, 6rem); grid-template-columns: .9fr 1.1fr; padding: clamp(3.3rem, 7vw, 5.5rem) max(1.4rem, calc((100vw - 1136px) / 2)); }
@@ -107,7 +111,7 @@ button { cursor: pointer; }
 .sound-board li svg { color: #56826a; flex: 0 0 auto; }
 
 .library-section { padding-bottom: 5.3rem; }
-.library-controls { display: grid; gap: .7rem; grid-template-columns: minmax(280px, 1fr) 210px 220px; margin-bottom: 1.35rem; }
+.library-controls { display: grid; gap: .7rem; grid-template-columns: minmax(280px, 1fr) 230px; margin-bottom: 1.35rem; }
 .library-search { align-items: center; background: white; border: 1px solid var(--line); border-radius: 8px; display: flex; padding-left: .8rem; }
 .library-search:focus-within { border-color: var(--blue); outline: 3px solid rgba(60,126,148,.14); }
 .library-search svg { color: #778387; flex: 0 0 auto; }
@@ -477,4 +481,61 @@ button { cursor: pointer; }
   .publish-status-copy { flex: 1 0 100%; max-width: none; }
   .publish-bar a, .publish-bar button { flex: 1; min-width: 0; padding-left: .45rem; padding-right: .45rem; }
   .publish-bar button { white-space: nowrap; }
+}
+
+/* Old Hangul uses the same bundled Nanum fonts as the literature site. */
+.brand, .old-korean-title { font-family: "NanumBarunGothicYetHangul", "Noto Serif KR", Batang, serif; font-variant-east-asian: normal; }
+.stage-grid h1, .section-heading h2, .focus-copy h2, .lesson-card h3, .lesson-hero h1, .lesson-block h2, .opening-block blockquote, .lesson-title-input, .opening-editor, .analysis-title-editor, .studio-sidebar-top h1, .grammar-teacher-inline .teacher-head h2 { font-family: "NanumMyeongjoYetHangul", "Noto Serif KR", Batang, serif; font-variant-east-asian: normal; }
+.lesson-paper, .lesson-editor-paper input, .lesson-editor-paper textarea, .lesson-editor-paper select { font-family: "NanumBarunGothicYetHangul", "Pretendard", "Noto Sans KR", sans-serif; font-variant-east-asian: normal; }
+.lesson-title-input, .opening-editor, .analysis-title-editor { font-family: "NanumMyeongjoYetHangul", "Noto Serif KR", Batang, serif !important; }
+
+/* Keep the lesson outline visible while the reader scrolls through the article. */
+.lesson-layout { align-items: start; }
+.lesson-rail { align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto; position: sticky; top: 1rem; }
+.lesson-meta-line { justify-content: flex-end; }
+
+.editor-qna-preview { background: #eef4f2; border: 1px dashed #9bb5ad; border-radius: 10px; padding: 1.2rem 1.3rem; }
+.editor-qna-preview strong { color: #2d5146; font-size: .94rem; }
+.editor-qna-preview p { color: #667570; font-size: .8rem; line-height: 1.7; margin: .45rem 0 0; }
+
+.qna-heading { align-items: flex-start; display: flex; gap: .8rem; margin-bottom: 1.15rem; }
+.qna-heading > svg { background: #dce9e8; border-radius: 50%; color: #326777; flex: 0 0 auto; height: 38px; padding: 9px; width: 38px; }
+.qna-heading h2 { font-family: "NanumMyeongjoYetHangul", "Noto Serif KR", Batang, serif; font-size: 1.35rem; margin: 0 0 .35rem; }
+.qna-heading p { color: #65736f; font-size: .8rem; line-height: 1.65; margin: 0; }
+.qna-form, .qna-reply-form { margin: 0 0 1.4rem; }
+.qna-form textarea, .qna-reply-form textarea { background: #fbfdfb; border: 1px solid #ccd6d2; border-radius: 8px; color: var(--ink); display: block; line-height: 1.7; min-height: 92px; outline: none; padding: .8rem .9rem; resize: vertical; width: 100%; }
+.qna-form textarea:focus, .qna-reply-form textarea:focus { border-color: #5a8794; box-shadow: 0 0 0 3px rgba(75,132,158,.16); }
+.qna-form > button { align-items: center; background: var(--navy); border: 0; border-radius: 7px; color: white; display: flex; font-size: .78rem; font-weight: 800; gap: .4rem; margin: .65rem 0 0 auto; padding: .65rem .85rem; }
+.qna-form > button svg { height: 15px; width: 15px; }
+.qna-form > button:disabled { cursor: not-allowed; opacity: .55; }
+.qna-login { border: 1px solid #365f6f; border-radius: 7px; color: #234f62; display: inline-flex; font-size: .8rem; font-weight: 800; padding: .65rem .85rem; }
+.qna-teacher-note { background: #edf3f6; border-left: 3px solid #7197aa; color: #52666f; font-size: .78rem; line-height: 1.65; margin: 0; padding: .75rem .9rem; }
+.qna-message { background: #edf5f1; border: 1px solid #c9ddd3; border-radius: 7px; color: #356454; font-size: .76rem; margin: .8rem 0 0; padding: .65rem .8rem; }
+.qna-list { display: grid; gap: .8rem; margin-top: 1.3rem; }
+.qna-item { background: white; border: 1px solid #d9dfdc; border-radius: 9px; padding: 1rem; }
+.qna-item > p, .qna-reply > p { line-height: 1.72; margin: .7rem 0 0; white-space: pre-wrap; word-break: break-word; }
+.qna-meta { align-items: center; color: #6b7672; display: flex; font-size: .7rem; gap: .5rem; }
+.qna-meta .role-badge { background: #e7efeb; border-radius: 999px; color: #356254; flex: 0 0 auto; font-size: .68rem; padding: .22rem .45rem; }
+.qna-meta .role-teacher { background: #e6eef5; color: #2d5f87; }
+.qna-meta time { margin-left: auto; }
+.qna-meta button { align-items: center; background: transparent; border: 0; color: #a04752; display: flex; font-size: .68rem; gap: .2rem; padding: .2rem; text-decoration: underline; }
+.qna-meta button svg { height: 12px; width: 12px; }
+.qna-reply { background: #f3f7f5; border-left: 3px solid #9bbab0; margin: .9rem 0 0 1.4rem; padding: .85rem; }
+.qna-reply-button { background: transparent; border: 0; color: #28689d; font-size: .76rem; margin: .7rem 0 0; padding: .25rem 0; text-decoration: underline; }
+.qna-reply-form { margin: .85rem 0 0 1.4rem; }
+.qna-reply-form > div { display: flex; gap: .45rem; justify-content: flex-end; margin-top: .5rem; }
+.qna-reply-form button { background: white; border: 1px solid #b7c3bf; border-radius: 6px; color: #43504d; font-size: .74rem; font-weight: 700; padding: .5rem .7rem; }
+.qna-reply-form .primary { background: var(--navy); border-color: var(--navy); color: white; }
+.qna-empty { background: #f2f3f0; border-radius: 8px; color: #77817e; font-size: .78rem; margin: 0; padding: 1.2rem; text-align: center; }
+
+@media (max-width: 900px) {
+  .area-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .area-grid { grid-template-columns: 1fr; }
+  .lesson-rail { max-height: none; overflow-x: auto; position: static; }
+  .qna-meta { align-items: flex-start; flex-wrap: wrap; }
+  .qna-meta time { margin-left: 0; width: 100%; }
+  .qna-reply, .qna-reply-form { margin-left: .55rem; }
 }

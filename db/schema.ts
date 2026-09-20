@@ -24,3 +24,21 @@ export const grammarLessons = sqliteTable(
     index("idx_grammar_lessons_owner_updated").on(table.ownerId, table.updatedAt),
   ],
 );
+
+export const grammarComments = sqliteTable(
+  "grammar_comments",
+  {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    lessonSlug: text("lesson_slug").notNull(),
+    parentId: integer("parent_id"),
+    userId: text("user_id").notNull(),
+    authorRole: text("author_role", { enum: ["teacher", "student"] }).notNull(),
+    authorName: text("author_name").notNull(),
+    body: text("body").notNull(),
+    createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  },
+  (table) => [
+    index("idx_grammar_comments_lesson_created").on(table.lessonSlug, table.createdAt),
+    index("idx_grammar_comments_parent_created").on(table.parentId, table.createdAt),
+  ],
+);
