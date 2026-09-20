@@ -12,6 +12,16 @@ export type GrammarComment = {
   createdAt: string;
 };
 
+export type GrammarQuestionThread = {
+  question: GrammarComment;
+  replies: GrammarComment[];
+};
+
+export type GrammarQuestionStats = {
+  total: number;
+  unanswered: number;
+};
+
 type CommentRow = {
   id: number;
   lesson_slug: string;
@@ -51,6 +61,63 @@ export async function getLessonComments(lessonSlug: string): Promise<GrammarComm
   } catch (error) {
     console.error("Unable to load grammar Q&A", error);
     return [];
+  }
+}
+
+export async function getGrammarQuestionThreads(limit = 100): Promise<GrammarQuestionThread[]> {
+  try {
+    const safeLimit = Math.max(1, Math.min(200, Math.trunc(limit)));
+    const result = await database().prepare(
+      `WITH recent_questions AS (
+         SELECT id FROM grammar_comments
+         WHERE parent_id IS NULL AND author_role = 'student'
+         ORDER BY created_at DESC, id DESC
+         LIMIT ?
+       )
+       SELECT id, lesson_slug, parent_id, user_id, author_role, author_name, body, created_at
+       FROM grammar_comments
+       WHERE id IN (SELECT id FROM recent_questions)
+          OR parent_id IN (SELECT id FROM recent_questions)
+       ORDER BY created_at ASC, id ASC`,
+    ).bind(safeLimit).all<CommentRow>();
+
+    const comments = result.results.map(rowToComment);
+    const repliesByQuestion = new Map<number, GrammarComment[]>();
+    for (const comment of comments) {
+      if (comment.parentId === null) continue;
+      const replies = repliesByQuestion.get(comment.parentId) ?? [];
+      replies.push(comment);
+      repliesByQuestion.set(comment.parentId, replies);
+    }
+
+    return comments
+      .filter((comment) => comment.parentId === null && comment.authorRole === "student")
+      .map((question) => ({ question, replies: repliesByQuestion.get(question.id) ?? [] }))
+      .sort((left, right) => {
+        const answerOrder = Number(left.replies.length > 0) - Number(right.replies.length > 0);
+        return answerOrder || right.question.createdAt.localeCompare(left.question.createdAt) || right.question.id - left.question.id;
+      });
+  } catch (error) {
+    console.error("Unable to load the teacher Q&A inbox", error);
+    return [];
+  }
+}
+
+export async function getGrammarQuestionStats(): Promise<GrammarQuestionStats> {
+  try {
+    const row = await database().prepare(
+      `SELECT
+         COUNT(*) AS total,
+         SUM(CASE WHEN NOT EXISTS (
+           SELECT 1 FROM grammar_comments reply WHERE reply.parent_id = question.id
+         ) THEN 1 ELSE 0 END) AS unanswered
+       FROM grammar_comments question
+       WHERE question.parent_id IS NULL AND question.author_role = 'student'`,
+    ).first<{ total: number; unanswered: number | null }>();
+    return { total: Number(row?.total ?? 0), unanswered: Number(row?.unanswered ?? 0) };
+  } catch (error) {
+    console.error("Unable to load grammar Q&A counts", error);
+    return { total: 0, unanswered: 0 };
   }
 }
 
