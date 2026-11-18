@@ -32,7 +32,7 @@ NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연
    - 소스: `HTTPS`, 호스트 `grammar.foredu.synology.me`, 포트 `443`
    - 대상: `HTTP`, 호스트 `127.0.0.1`, 포트 `7320`
    - `foredu.synology.me` 인증서에 `grammar.foredu.synology.me`를 포함하고 이 역방향 프록시에 할당합니다.
-5. GitHub 저장소 Actions secrets에 `NAS_HOST`, `NAS_PORT`, `NAS_USER`, `NAS_SSH_KEY`, `NAS_KNOWN_HOSTS`를 등록합니다.
+5. GitHub 저장소 Actions secrets에 `NAS_USER`, `NAS_SSH_KEY`, `NAS_KNOWN_HOSTS`를 등록합니다. SSH 호스트와 포트는 현재 `foredu.synology.me:2202`로 워크플로에 고정되어 있습니다. 기존 DDNS 이름으로 만든 `NAS_KNOWN_HOSTS`도 같은 NAS 호스트 키라면 배포 때 새 이름으로 안전하게 다시 연결됩니다.
 6. NAS 배포 계정이 비밀번호 없이 다음 명령만 실행할 수 있도록 `sudoers`를 제한해 둡니다.
 
 ```text
