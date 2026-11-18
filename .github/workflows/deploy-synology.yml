@@ -21,29 +21,25 @@ jobs:
       - name: Deploy the latest main commit
         shell: bash
         env:
-          # The public web domain changed, while the NAS host key itself did not.
+          # Current DDNS endpoint and independently verified NAS host key.
           NAS_HOST: foredu.synology.me
           NAS_PORT: "2202"
+          NAS_HOST_KEY: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA++9n7ukVI2QHi4HCCk0Fmr7FD11Do7x0LBkc0B4uZx"
           NAS_USER: ${{ secrets.NAS_USER }}
           NAS_SSH_KEY: ${{ secrets.NAS_SSH_KEY }}
-          NAS_KNOWN_HOSTS: ${{ secrets.NAS_KNOWN_HOSTS }}
         run: |
           set -euo pipefail
 
           test -n "$NAS_HOST"
           test -n "$NAS_PORT"
+          test -n "$NAS_HOST_KEY"
           test -n "$NAS_USER"
           test -n "$NAS_SSH_KEY"
-          test -n "$NAS_KNOWN_HOSTS"
 
           ssh_dir="$RUNNER_TEMP/grammar-ssh"
           install -m 700 -d "$ssh_dir"
           printf '%s\n' "$NAS_SSH_KEY" | tr -d '\r' > "$ssh_dir/id_ed25519"
-          printf '%s\n' "$NAS_KNOWN_HOSTS" | tr -d '\r' > "$ssh_dir/known_hosts.source"
-          # Reuse the verified NAS host keys after the DDNS name change by
-          # replacing only their lookup label. Strict key checking remains on.
-          awk -v host="[$NAS_HOST]:$NAS_PORT" 'NF >= 3 && $1 !~ /^#/ { print host, $2, $3 }' \
-            "$ssh_dir/known_hosts.source" > "$ssh_dir/known_hosts"
+          printf '[%s]:%s %s\n' "$NAS_HOST" "$NAS_PORT" "$NAS_HOST_KEY" > "$ssh_dir/known_hosts"
           chmod 600 "$ssh_dir/id_ed25519" "$ssh_dir/known_hosts"
 
           ssh-keygen -y -f "$ssh_dir/id_ed25519" >/dev/null
