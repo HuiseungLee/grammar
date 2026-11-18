@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { GRAMMAR_SITE_URL } from "@/lib/site-domain";
 
 /* eslint-disable @next/next/next-script-for-ga -- 사용자가 지정한 두 Analytics 태그를 문서 head에 그대로 둡니다. */
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://grammar.lhsstart.synology.me"),
+  metadataBase: new URL(GRAMMAR_SITE_URL),
   title: "수니기는 문법시간 | 국어 문법 개념과 학습 자료",
   description: "국어 문법의 원리를 예문과 문장 분석, Q&A로 차근차근 이해하는 학습 공간",
   alternates: { canonical: "/" },

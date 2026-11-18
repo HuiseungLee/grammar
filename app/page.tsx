@@ -14,6 +14,7 @@ import {
 } from "@/lib/editor-access";
 import { getPublishedLessons } from "@/lib/grammar-data";
 import { GRAMMAR_DOMAINS } from "@/lib/lesson-types";
+import { PORTAL_SITE_URL } from "@/lib/site-domain";
 import { getSharedUserFromCookies, isSharedAuthConfigured } from "@/lib/supabase-auth";
 
 const grammarAreas = [
@@ -46,7 +47,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
           <a href="#lesson-library">학습 자료</a>
           {editor ? <a className="studio-link" href="/studio"><FilePenLine aria-hidden="true" size={16} /> 편집실</a> : null}
           {account ? <form action="/api/studio/logout" method="post" className="account-session"><span>{account.displayName}</span><button type="submit"><LogOut aria-hidden="true" size={15} /> 로그아웃</button></form> : sharedLoginEnabled ? <a className="account-login" href="/login"><LogIn aria-hidden="true" size={15} /> 로그인</a> : null}
-          <a className="portal-link" href="https://lhsstart.synology.me">국어시간 홈</a>
+          <a className="portal-link" href={PORTAL_SITE_URL}>국어시간 홈</a>
         </nav>
       </header>
 
@@ -115,7 +116,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ d
 
       <footer className="site-footer">
         <div><strong>수니기는 문법시간</strong><span>국어 문법의 원리를 함께 발견하는 학습 공간</span></div>
-        <a href="https://lhsstart.synology.me">수니기는 국어시간</a>
+        <a href={PORTAL_SITE_URL}>수니기는 국어시간</a>
       </footer>
     </main>
   );

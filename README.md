@@ -4,7 +4,7 @@
 
 ## 문학·문법·진로 통합 계정
 
-문학 사이트의 Supabase 회원 DB를 공통 계정 저장소로 사용합니다. 세 사이트가 모두 HTTPS로 열릴 때 한 사이트에서 로그인하면 `lhsstart.synology.me`의 문학·문법·진로 하위 도메인에서 같은 로그인 상태를 사용합니다. 회원가입과 이메일 6자리 확인, 교사 초대 코드는 문학 사이트의 기존 방식과 같습니다.
+문학 사이트의 Supabase 회원 DB를 공통 계정 저장소로 사용합니다. 세 사이트가 모두 HTTPS로 열릴 때 한 사이트에서 로그인하면 `foredu.synology.me`의 문학·문법·진로 하위 도메인에서 같은 로그인 상태를 사용합니다. 전환 기간에는 기존 `lhsstart.synology.me` 하위 도메인의 로그인 쿠키도 계속 지원합니다. 회원가입과 이메일 6자리 확인, 교사 초대 코드는 문학 사이트의 기존 방식과 같습니다.
 
 현재 문학 Supabase의 URL과 `anon` 게시용 키가 기본값으로 포함되어 있어 별도 복사 없이 작동합니다. Supabase 키를 교체할 때는 NAS의 이 프로젝트 `.env`에 문학 사이트 `.env`의 다음 공개 값을 그대로 복사하면 코드 변경 없이 새 값이 우선 적용됩니다.
 
@@ -18,7 +18,7 @@ NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연
 
 ## Synology 배포
 
-운영 주소는 `https://grammar.lhsstart.synology.me`이며 컨테이너는 NAS의 루프백 포트 `7320`에서 실행됩니다. GitHub의 `main` 브랜치에 푸시하면 Actions가 NAS의 배포 스크립트를 실행하도록 구성되어 있습니다.
+운영 주소는 `https://grammar.foredu.synology.me`이며 컨테이너는 NAS의 루프백 포트 `7320`에서 실행됩니다. GitHub의 `main` 브랜치에 푸시하면 Actions가 NAS의 배포 스크립트를 실행하도록 구성되어 있습니다.
 
 ### NAS 최초 설정
 
@@ -28,7 +28,10 @@ NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연
    - `GRAMMAR_SESSION_SECRET`: 충분히 긴 무작위 문자열
    - 선택 사항: 위의 문학 사이트 공개 Supabase 값
 3. `docker compose up -d --build`를 한 번 실행합니다.
-4. DSM 역방향 프록시에서 `grammar.lhsstart.synology.me`를 `http://127.0.0.1:7320`으로 연결합니다.
+4. DSM 역방향 프록시에서 `grammar.foredu.synology.me`를 `http://127.0.0.1:7320`으로 연결합니다.
+   - 소스: `HTTPS`, 호스트 `grammar.foredu.synology.me`, 포트 `443`
+   - 대상: `HTTP`, 호스트 `127.0.0.1`, 포트 `7320`
+   - `foredu.synology.me` 인증서에 `grammar.foredu.synology.me`를 포함하고 이 역방향 프록시에 할당합니다.
 5. GitHub 저장소 Actions secrets에 `NAS_HOST`, `NAS_PORT`, `NAS_USER`, `NAS_SSH_KEY`, `NAS_KNOWN_HOSTS`를 등록합니다.
 6. NAS 배포 계정이 비밀번호 없이 다음 명령만 실행할 수 있도록 `sudoers`를 제한해 둡니다.
 

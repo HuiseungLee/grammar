@@ -80,9 +80,7 @@ export function SharedLogin({
     setMessage("");
     try {
       const response = mode === "signup"
-        ? await fetch(window.location.hostname.endsWith(".lhsstart.synology.me")
-          ? "https://literature.lhsstart.synology.me/api/signup"
-          : "/api/auth/signup", {
+        ? await fetch("/api/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
