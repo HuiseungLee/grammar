@@ -15,7 +15,7 @@ services:
       TEACHER_EMAILS: "${TEACHER_EMAILS:-lhsstart@gmail.com,admin@admin.com}"
       STUDENT_EMAILS: "${STUDENT_EMAILS:-stu01@st.com}"
     ports:
-      - "127.0.0.1:${GRAMMAR_PORT:-7320}:3000"
+      - "127.0.0.1:${GRAMMAR_PORT:-7321}:3000"
     volumes:
       - grammar-learning-data:/data
     networks:

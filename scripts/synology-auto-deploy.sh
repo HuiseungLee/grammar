@@ -8,7 +8,6 @@ export PATH
 APP_DIR="${APP_DIR:-/volume1/docker/grammar-app}"
 DEPLOY_REMOTE="${DEPLOY_REMOTE:-origin}"
 DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
-HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:7320/api/health}"
 STATE_DIR="$APP_DIR/.deploy-state"
 LOCK_DIR="$STATE_DIR/lock"
 LAST_SUCCESS_FILE="$STATE_DIR/last-successful-commit"
@@ -53,17 +52,21 @@ if [ "$current_commit" != "$target_commit" ]; then
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] Updating $current_commit -> $target_commit"
   git merge --ff-only "$target_commit"
 fi
-if [ "$last_success" = "$target_commit" ] && curl -fsS "$HEALTH_URL" >/dev/null 2>&1; then
-  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Already deployed: $target_commit"
-  exit 0
+if [ "$last_success" = "$target_commit" ]; then
+  docker compose up -d
+else
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] Building and starting $target_commit"
+  docker compose up -d --build
 fi
 
-echo "[$(date '+%Y-%m-%d %H:%M:%S')] Building and starting $target_commit"
-docker compose up -d --build
+binding="$(docker compose port grammar-learning 3000)"
+health_url="${HEALTH_URL:-http://$binding/api/health}"
 
 attempt=1
 while [ "$attempt" -le 45 ]; do
-  if curl -fsS "$HEALTH_URL" >/dev/null 2>&1; then
+  if health="$(curl -fsS --max-time 6 "$health_url" 2>/dev/null)" &&
+     printf '%s\n' "$health" | grep -Eq '"service"[[:space:]]*:[[:space:]]*"grammar-learning"' &&
+     printf '%s\n' "$health" | grep -Eq '"database"[[:space:]]*:[[:space:]]*true'; then
     printf '%s\n' "$target_commit" > "$LAST_SUCCESS_FILE"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] Deployment succeeded: $target_commit"
     exit 0

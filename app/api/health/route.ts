@@ -9,13 +9,14 @@ export async function GET() {
     ]);
     if (database?.ok !== 1) throw new Error("Database check failed");
     return Response.json({
+      service: "grammar-learning",
       status: accountService ? "ok" : "degraded",
       database: true,
       accountService,
     });
   } catch {
     return Response.json(
-      { status: "unavailable", database: false, accountService: false },
+      { service: "grammar-learning", status: "unavailable", database: false, accountService: false },
       { status: 503 },
     );
   }
