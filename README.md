@@ -22,13 +22,13 @@ NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연
 
 ### NAS 최초 설정
 
-1. `/volume1/docker/grammar-app`에 이 저장소를 복제합니다.
+1. `foredu` NAS의 `/volume2/docker/grammar-app`에 이 저장소를 복제합니다.
 2. `.env.synology.example`을 `.env`로 복사하고 다음 값을 변경합니다.
    - `GRAMMAR_ADMIN_PASSWORD`: 편집실에서 사용할 강력한 암호
    - `GRAMMAR_SESSION_SECRET`: 충분히 긴 무작위 문자열
    - 기존 문법 `.env`를 복원했다면 `GRAMMAR_PORT=7321`인지 확인합니다.
    - 선택 사항: 위의 문학 사이트 공개 Supabase 값
-3. `docker compose up -d --build`를 한 번 실행합니다.
+3. NAS에서 `sudo /bin/sh /volume2/docker/grammar-app/scripts/synology-auto-deploy.sh`를 실행합니다. 이 스크립트가 Docker 네트워크를 준비하고 문법 앱을 빌드한 뒤 상태를 확인합니다.
 4. NAS에서 `curl -fsS http://127.0.0.1:7321/api/health`를 실행해 `"service":"grammar-learning"`과 `"database":true`를 확인한 뒤 DSM 역방향 프록시를 연결합니다.
    - 소스: `HTTPS`, 호스트 `grammar.foredu.synology.me`, 포트 `443`
    - 대상: `HTTP`, 호스트 `127.0.0.1`, 포트 `7321` (다른 `GRAMMAR_PORT`를 지정했다면 그 포트)
@@ -37,7 +37,7 @@ NAS에서는 문학 컨테이너와 `lhsstart-shared` Docker 내부망으로 연
 6. NAS 배포 계정이 비밀번호 없이 다음 명령만 실행할 수 있도록 `sudoers`를 제한해 둡니다.
 
 ```text
-/bin/sh /volume1/docker/grammar-app/scripts/synology-auto-deploy.sh
+/bin/sh /volume2/docker/grammar-app/scripts/synology-auto-deploy.sh
 ```
 
 설정이 끝난 뒤에는 `main` 브랜치로 커밋·푸시할 때마다 새 이미지가 빌드되고 `/api/health` 확인까지 자동으로 수행됩니다. 학습 자료 데이터는 `grammar-learning-data` Docker 볼륨에 유지됩니다.

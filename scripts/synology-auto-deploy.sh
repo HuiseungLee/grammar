@@ -2,10 +2,10 @@
 
 set -eu
 
-PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/packages/ContainerManager/target/usr/bin:/var/packages/Docker/target/usr/bin:${PATH:-}"
+PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/packages/Git/target/bin:/var/packages/ContainerManager/target/usr/bin:/var/packages/Docker/target/usr/bin:${PATH:-}"
 export PATH
 
-APP_DIR="${APP_DIR:-/volume1/docker/grammar-app}"
+APP_DIR="${APP_DIR:-/volume2/docker/grammar-app}"
 DEPLOY_REMOTE="${DEPLOY_REMOTE:-origin}"
 DEPLOY_BRANCH="${DEPLOY_BRANCH:-main}"
 STATE_DIR="$APP_DIR/.deploy-state"
